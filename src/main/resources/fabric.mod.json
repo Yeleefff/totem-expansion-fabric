@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "totemexpansion",
+  "version": "${version}",
+
+  "name": "TotemExpansion",
+  "description": "amogus",
+  "authors": [
+    "HadronCollision",
+    "TechPro424"
+  ],
+  "contact": {
+
+  },
+
+  "license": "GPL-3.0",
+  "icon": "assets/totemexpansion/totemexpansion-icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "org.refabricators.totemexpansion.TotemExpansion"
+    ],
+    "client": [
+      "org.refabricators.totemexpansion.TotemExpansionClient"
+    ]
+  },
+  "mixins": [
+    "totemexpansion.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
