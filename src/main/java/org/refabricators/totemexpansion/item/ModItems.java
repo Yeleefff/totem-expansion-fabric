@@ -16,5 +16,6 @@ public class ModItems
         return Registry.register(Registry.ITEM, new Identifier(TotemExpansion.MOD_ID, name), item);
     }
     public static void registerModItems() {
+        System.out.println("testing");
     }
 }
