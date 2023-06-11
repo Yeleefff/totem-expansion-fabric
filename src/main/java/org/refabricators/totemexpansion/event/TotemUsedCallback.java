@@ -1,32 +1,31 @@
 package org.refabricators.totemexpansion.event;
 
+import org.refabricators.totemexpansion.item.BaseTotem;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.advancement.criterion.Criteria;
+
+import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.stat.Stats;
+
+
 
 @FunctionalInterface
 public interface TotemUsedCallback {
-    void invoke(LivingEntity entity, DamageSource damageSource, ItemStack stack);
+    void invoke(LivingEntity entity, ItemStack stack);
 
     Event<TotemUsedCallback> EVENT = EventFactory.createArrayBacked(TotemUsedCallback.class,
-            (listeners) -> (LivingEntity entity, DamageSource damageSource, ItemStack stack) -> {
-                for (TotemUsedCallback listener : listeners) {
-                    // Invoke all event listeners with the provided entity and damage source
-                    listener.invoke(entity, damageSource, stack);
+            (listeners) -> (LivingEntity entity, ItemStack stack) -> {
+                Item item = stack.getItem();
+                if(!(item instanceof BaseTotem)) return;
 
-                    if (stack != null && entity instanceof ServerPlayerEntity) {
+                entity.setHealth(1.0f);
+                entity.clearStatusEffects();
+                ((BaseTotem)item).onTotemUse(entity);
+                entity.getWorld().sendEntityStatus(entity, EntityStatuses.USE_TOTEM_OF_UNDYING);
 
-                        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity)entity;
-                        serverPlayerEntity.incrementStat(Stats.USED.getOrCreateStat(Items.TOTEM_OF_UNDYING));
-                        Criteria.USED_TOTEM.trigger(serverPlayerEntity, stack);
-
-                    }
-                }
+                for (TotemUsedCallback listener : listeners) listener.invoke(entity, stack);
             });
 }

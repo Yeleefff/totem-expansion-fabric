@@ -13,6 +13,11 @@ import net.minecraft.entity.damage.DamageSource;
 public abstract class TryUseTotemMixin {
     @Inject(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;copy()Lnet/minecraft/item/ItemStack;"))
     private void injectCustomTotems(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
-        TotemExpansion.LOGGER.info("works");
+        TotemExpansion.LOGGER.info("works before itemstack copy");
+    }
+
+    @Inject(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"))
+    private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir) {
+        TotemExpansion.LOGGER.info("works before sethealth");
     }
 }
