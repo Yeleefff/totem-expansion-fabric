@@ -9,8 +9,9 @@ import org.refabricators.totemexpansion.TotemExpansion;
 
 public class ModItems
 {
-    public static final Item TOTEM_OF_ASCENDING = registerItem("totem_of_ascending",
+    public static final Item TOTEM_FALLING = registerItem("totem_falling",
             new Item(new FabricItemSettings().group(ItemGroup.COMBAT)));
+
     private static Item registerItem(String name, Item item)
     {
         return Registry.register(Registry.ITEM, new Identifier(TotemExpansion.MOD_ID, name), item);
