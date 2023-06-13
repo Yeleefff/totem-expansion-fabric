@@ -14,6 +14,6 @@ public class ModItems {
     }
     
     public static void registerModItems() {
-        
+        registerItem("fire_totem", new FireTotem());
     }
 }
