@@ -1,8 +1,6 @@
 package org.refabricators.totemexpansion;
 
 import net.fabricmc.api.ModInitializer;
-
-import org.refabricators.totemexpansion.event.CustomTotemUsedCallback;
 import org.refabricators.totemexpansion.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +11,8 @@ public class TotemExpansion implements ModInitializer
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
-	public void onInitialize() {
+	public void onInitialize()
+	{
 		ModItems.registerModItems();
-		CustomTotemUsedCallback.EVENT.register((entity, stack) -> {});
 	}
 }
