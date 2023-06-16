@@ -1,5 +1,7 @@
 package org.refabricators.totemexpansion.event;
 
+import org.refabricators.totemexpansion.item.BaseTotem;
+
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.EntityStatuses;
@@ -7,16 +9,21 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 
 @FunctionalInterface
-public interface TotemUsedCallback {
+public interface CustomTotemUsedCallback {
     void invoke(LivingEntity entity, ItemStack stack);
 
-      Event<TotemUsedCallback> EVENT = EventFactory.createArrayBacked(TotemUsedCallback.class,
+      Event<CustomTotemUsedCallback> EVENT = EventFactory.createArrayBacked(CustomTotemUsedCallback.class,
             (listeners) -> (LivingEntity entity, ItemStack stack) -> {
-                for (TotemUsedCallback listener : listeners) {
+
+                if(!(stack.getItem() instanceof BaseTotem)) return;
+
+                for (CustomTotemUsedCallback listener : listeners) {
                     // Invoke all event listeners with the provided player and death message.
+                    listener.invoke(entity, stack);
+
                     entity.setHealth(1.0f);
                     entity.clearStatusEffects();
-                    listener.invoke(entity, stack);
+                    ((BaseTotem)stack.getItem()).onTotemUse(entity);
                     entity.getWorld().sendEntityStatus(entity, EntityStatuses.USE_TOTEM_OF_UNDYING);
                 }
             });

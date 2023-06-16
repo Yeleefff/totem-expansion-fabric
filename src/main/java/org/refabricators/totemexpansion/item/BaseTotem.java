@@ -17,6 +17,8 @@ public abstract class BaseTotem extends Item {
 
     public BaseTotem() {
         super(new FabricItemSettings().maxCount(1).rarity(Rarity.UNCOMMON));
+        addDamageTypes();
+        addEffects();
     }
 
     protected ArrayList<RegistryKey<DamageType>> damageTypes = new ArrayList<RegistryKey<DamageType>>();

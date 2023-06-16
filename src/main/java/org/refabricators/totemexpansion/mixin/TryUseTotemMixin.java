@@ -1,7 +1,7 @@
 package org.refabricators.totemexpansion.mixin;
 
 import org.refabricators.totemexpansion.TotemExpansion;
-import org.refabricators.totemexpansion.event.TotemUsedCallback;
+import org.refabricators.totemexpansion.event.CustomTotemUsedCallback;
 import org.refabricators.totemexpansion.item.BaseTotem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,9 +27,14 @@ public abstract class TryUseTotemMixin {
         return original.call(stack, item) || (stack.getItem() instanceof BaseTotem && ((BaseTotem)stack.getItem()).validDamageType(source));
     }
 
-    @Inject(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-    private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, ItemStack itemStack, ItemStack itemStack2) {
+    @Inject(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION, cancellable = true)
+    private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, ItemStack itemStack) {
         TotemExpansion.LOGGER.info("works before sethealth");
-        TotemUsedCallback.EVENT.invoker().invoke(((LivingEntity) (Object) this), itemStack2);
+
+        if(itemStack.getItem() instanceof BaseTotem && ((BaseTotem)itemStack.getItem()).validDamageType(source)) {
+            CustomTotemUsedCallback.EVENT.invoker().invoke(((LivingEntity) (Object) this), itemStack);
+            cir.setReturnValue(itemStack != null);
+        }
+        
     }
 }
