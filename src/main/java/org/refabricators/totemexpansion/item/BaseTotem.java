@@ -29,7 +29,7 @@ public abstract class BaseTotem extends Item {
     public abstract void addEffects();
 
     public void onTotemUse(LivingEntity entity) {
-        for (StatusEffectInstance effect : effects) entity.addStatusEffect(effect);
+        for (StatusEffectInstance effect : effects) entity.addStatusEffect(new StatusEffectInstance(effect));
     }
 
     public boolean validDamageType(DamageSource source) {
