@@ -13,9 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Rarity;
 
-public abstract class BaseTotem extends Item {
+public abstract class TotemBase extends Item {
 
-    public BaseTotem() {
+    public TotemBase() {
         super(new FabricItemSettings().maxCount(1).rarity(Rarity.UNCOMMON));
         addDamageTypes();
         addEffects();

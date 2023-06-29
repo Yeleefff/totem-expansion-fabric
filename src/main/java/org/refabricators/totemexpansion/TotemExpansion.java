@@ -12,9 +12,12 @@ public class TotemExpansion implements ModInitializer
 	public static final String MOD_ID = "totemexpansion";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
+	public static final StatusEffect SPELUNKING_EFFECT = new SpelunkingEffect();
+
 	@Override
 	public void onInitialize() {
 		ModItems.registerModItems();
 		CustomTotemUsedCallback.EVENT.register((entity, stack) -> {});
+		Registry.register(Registries.STATUS_EFFECT, new Identifier(MOD_ID, "spelunking_effect"), SPELUNKING_EFFECT);
 	}
 }
