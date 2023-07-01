@@ -1,40 +1,40 @@
-package org.refabricators.totemexpansion.item;
+package org.refabricators.totemexpansion.mixin;
 
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import org.refabricators.totemexpansion.TotemExpansion;
-import org.refabricators.totemexpansion.item.totem.*;
+import org.refabricators.totemexpansion.event.CustomTotemUsedCallback;
+import org.refabricators.totemexpansion.item.BaseTotem;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-public class ModItems
-{
-    public static final Item TOTEM_FALLING = registerItem("totem_falling", new TotemFalling());
-    public static final Item TOTEM_FIRE = registerItem("totem_fire", new TotemFire());
-    public static final Item TOTEM_BREATHING = registerItem("totem_breathing", new TotemBreathing());
-    public static final Item TOTEM_EXPLOSION = registerItem("totem_explosion", new TotemExplosion());
-    public static final Item TOTEM_ORES = registerItem("totem_ores", new TotemOres());
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
-    private static Item registerItem(String name, Item item)
-    {
-        return Registry.register(Registries.ITEM, new Identifier(TotemExpansion.MOD_ID, name), item);
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+
+
+@Mixin(LivingEntity.class)
+public abstract class TryUseTotemMixin {
+
+    @WrapOperation(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    private boolean injectCustomTotemCheck(ItemStack stack, Item item, Operation<Boolean> original, DamageSource source) {
+        TotemExpansion.LOGGER.info("works before itemstack copy");
+        return original.call(stack, item) || (stack.getItem() instanceof BaseTotem && ((BaseTotem)stack.getItem()).validDamageType(source));
     }
 
-    private static void addModItemsToModGroup()
-    {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
-            entries.add(TOTEM_FALLING);
-            entries.add(TOTEM_FIRE);
-            entries.add(TOTEM_BREATHING);
-            entries.add(TOTEM_EXPLOSION);
-            entries.add(TOTEM_ORES);
-        });
-    }
+    @Inject(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION, cancellable = true)
+    private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, ItemStack itemStack) {
+        TotemExpansion.LOGGER.info("works before sethealth");
 
-    public static void registerModItems()
-    {
-        addModItemsToModGroup();
+        if(itemStack.getItem() instanceof BaseTotem && ((BaseTotem)itemStack.getItem()).validDamageType(source)) {
+            CustomTotemUsedCallback.EVENT.invoker().invoke(((LivingEntity) (Object) this), itemStack);
+            cir.setReturnValue(itemStack != null);
+        }
+        
     }
 }

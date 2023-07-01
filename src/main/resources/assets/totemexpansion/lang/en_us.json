@@ -1,8 +1,3 @@
 {
-  "item.totemexpansion.totem_falling": "Totem of Ascending",
-  "item.totemexpansion.totem_fire": "Totem of Smouldering",
-  "item.totemexpansion.totem_breathing": "Totem of Breathing",
-  "item.totemexpansion.totem_explosion": "Totem of Defusing",
-  "item.totemexpansion.totem_ores": "Totem of Spelunking",
-  "effect.totemexpansion.spelunking_effect": "Spelunking"
+  "item.totemexpansion.totem_falling": "Totem of Ascending"
 }

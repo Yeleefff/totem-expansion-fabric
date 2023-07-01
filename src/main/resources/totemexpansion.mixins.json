@@ -4,10 +4,7 @@
   "package": "org.refabricators.totemexpansion.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "TryUseTotemMixin",
-    "PlayerEntityMixin",
-    "InventoryAccessor",
-    "TotemUseInvoker"
+    "TryUseTotemMixin"
   ],
   "client": [
   ],
