@@ -3,7 +3,6 @@ package org.refabricators.totemexpansion;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
