@@ -14,7 +14,7 @@
   },
 
   "license": "Lesser General Public License Version 3.0 or later",
-  "icon": "assets/totemexpansion/totemexpansion-icon.png",
+  "icon": "assets/totemexpansion/icon/icon.png",
 
   "environment": "*",
   "entrypoints": {
@@ -32,7 +32,7 @@
   "depends": {
     "fabricloader": ">=0.14.19",
     "fabric-api": "*",
-    "minecraft": "~1.20",
-    "java": ">=17"
+    "minecraft": "~1.21",
+    "java": ">=21"
   }
 }

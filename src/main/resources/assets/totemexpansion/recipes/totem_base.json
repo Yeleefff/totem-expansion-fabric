@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "C": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "pattern": [
+    " S ",
+    "CCC",
+    " C "
+  ],
+  "result": {
+    "count": 1,
+    "id": "totemexpansion:totem_base"
+  }
+}

@@ -52,7 +52,7 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable
         if (this.isPlayer())
         {
             PlayerInventory inventory = ((InventoryAccessor) this).getInventory();
-            ItemStack totem = Items.TOTEM_OF_UNDYING.getDefaultStack();
+            ItemStack totemUndying = Items.TOTEM_OF_UNDYING.getDefaultStack();
             ItemStack totemFalling = ModItems.TOTEM_FALLING.getDefaultStack();
             ItemStack totemFire = ModItems.TOTEM_FIRE.getDefaultStack();
             ItemStack totemBreathing = ModItems.TOTEM_BREATHING.getDefaultStack();
@@ -63,9 +63,9 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable
             {
                 return inventory.getMainHandStack();
             }
-            if (inventory.contains(totem))
+            if (inventory.contains(totemUndying))
             {
-                return inventory.getStack(inventory.getSlotWithStack(totem));
+                return inventory.getStack(inventory.getSlotWithStack(totemUndying));
             }
             if (inventory.contains(totemFalling))
             {

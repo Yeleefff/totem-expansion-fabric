@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.refabricators.totemexpansion.TotemExpansion;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
@@ -14,9 +13,8 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Rarity;
 
 public abstract class TotemBase extends Item {
-
     public TotemBase() {
-        super(new FabricItemSettings().maxCount(1).rarity(Rarity.UNCOMMON));
+        super(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
         addDamageTypes();
         addEffects();
     }
@@ -33,9 +31,10 @@ public abstract class TotemBase extends Item {
     }
 
     public boolean validDamageType(DamageSource source) {
-        for (RegistryKey<DamageType> key : damageTypes) if(source.isOf(key)) {
-            TotemExpansion.LOGGER.info("valid damage type");
-            return true;
+        for (RegistryKey<DamageType> key : damageTypes) {
+            if (source.isOf(key)) {
+                return true;
+            }
         }
         return false;
     }
