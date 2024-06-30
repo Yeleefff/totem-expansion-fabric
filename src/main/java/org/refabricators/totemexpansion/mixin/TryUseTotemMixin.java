@@ -39,7 +39,7 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable
     @Inject(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION, cancellable = true)
     private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, ItemStack itemStack)
     {
-        if(itemStack.getItem() instanceof TotemBase && ((TotemBase)itemStack.getItem()).validDamageType(source) || itemStack.isOf(ModItems.TOTEM_ORES))
+        if(itemStack.getItem() instanceof TotemBase && ((TotemBase) itemStack.getItem()).validDamageType(source) || itemStack.isOf(ModItems.TOTEM_ORES))
         {
             CustomTotemUsedCallback.EVENT.invoker().invoke(((LivingEntity) (Object) this), itemStack);
             cir.setReturnValue(itemStack != null);
@@ -57,7 +57,6 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable
             ItemStack totemFire = ModItems.TOTEM_FIRE.getDefaultStack();
             ItemStack totemBreathing = ModItems.TOTEM_BREATHING.getDefaultStack();
             ItemStack totemExplosion = ModItems.TOTEM_EXPLOSION.getDefaultStack();
-
 
             if (inventory.getMainHandStack().isOf(ModItems.TOTEM_ORES))
             {

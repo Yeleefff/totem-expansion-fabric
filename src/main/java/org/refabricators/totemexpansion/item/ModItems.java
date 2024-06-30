@@ -37,14 +37,23 @@ public class ModItems {
 
     private static void addModItemsToModGroup() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
+            entries.add(TOTEM_HEAD_UNDYING);
             entries.add(TOTEM_FALLING);
+            entries.add(TOTEM_HEAD_FALLING);
             entries.add(TOTEM_FIRE);
+            entries.add(TOTEM_HEAD_FIRE);
             entries.add(TOTEM_BREATHING);
+            entries.add(TOTEM_HEAD_BREATHING);
             entries.add(TOTEM_EXPLOSION);
+            entries.add(TOTEM_HEAD_EXPLOSION);
             entries.add(TOTEM_ORES);
+            entries.add(TOTEM_HEAD_ORES);
             entries.add(TOTEM_TIME);
+            entries.add(TOTEM_HEAD_TIME);
             entries.add(TOTEM_RECALL);
+            entries.add(TOTEM_HEAD_RECALL);
             entries.add(TOTEM_REPAIR);
+            entries.add(TOTEM_HEAD_REPAIR);
         });
     }
 

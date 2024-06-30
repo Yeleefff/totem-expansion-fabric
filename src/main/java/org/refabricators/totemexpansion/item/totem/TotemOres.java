@@ -10,19 +10,15 @@ import org.refabricators.totemexpansion.TotemExpansion;
 import org.refabricators.totemexpansion.item.TotemBase;
 import org.refabricators.totemexpansion.mixin.TotemUseInvoker;
 
-public class TotemOres extends TotemBase
-{
-
+public class TotemOres extends TotemBase {
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand)
-    {
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
         return super.use(world, user, hand);
     }
 
     @Override
-    public void addDamageTypes()
-    {
+    public void addDamageTypes() {
     }
 
     @Override
