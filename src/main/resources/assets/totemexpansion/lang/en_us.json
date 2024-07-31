@@ -1,9 +1,23 @@
 {
+  "item.totemexpansion.totem_base": "Totem Base",
+
+  "item.totemexpansion.totem_head_falling": "Totem head of Ascending",
+  "item.totemexpansion.totem_head_fire": "Totem head of Smouldering",
+  "item.totemexpansion.totem_head_breathing": "Totem head of Breathing",
+  "item.totemexpansion.totem_head_explosion": "Totem head of Defusing",
+  "item.totemexpansion.totem_head_ores": "Totem head of Spelunking",
+  "item.totemexpansion.totem_head_time": "Totem head of Time",
+  "item.totemexpansion.totem_head_repair": "Totem head of Repair",
+  "item.totemexpansion.totem_head_recall": "Totem head of Recall",
+  "item.totemexpansion.totem_head_undying": "Totem head of Undying",
+
   "item.totemexpansion.totem_falling": "Totem of Ascending",
   "item.totemexpansion.totem_fire": "Totem of Smouldering",
   "item.totemexpansion.totem_breathing": "Totem of Breathing",
   "item.totemexpansion.totem_explosion": "Totem of Defusing",
   "item.totemexpansion.totem_ores": "Totem of Spelunking",
 
-  "effect.totemexpansion.spelunking_effect": "Spelunking"
+  "effect.totemexpansion.spelunking_effect": "Spelunking",
+
+  "entity.minecraft.villager.witch_doctor": "Witch Doctor"
 }

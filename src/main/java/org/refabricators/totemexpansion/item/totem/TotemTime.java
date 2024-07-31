@@ -8,20 +8,18 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
+import org.apache.logging.log4j.core.jmx.Server;
 import org.refabricators.totemexpansion.item.TotemBase;
+import org.refabricators.totemexpansion.mixin.ServerWorldMixin;
 import org.refabricators.totemexpansion.mixin.TotemUseInvoker;
 
 public class TotemTime extends TotemBase {
+    public static boolean triggered = false;
+
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
-        int timeIncrement = 120;
-
-        if (!world.getDimension().hasFixedTime() && world instanceof ServerWorld serverWorld) {
-            for (int i = 0; i < (int) (12000 / timeIncrement); i++) {
-                serverWorld.setTimeOfDay(world.getTimeOfDay() + timeIncrement);
-            }
-        }
+        triggered = true;
 
         return super.use(world, user, hand);
     }

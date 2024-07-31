@@ -10,9 +10,8 @@ import net.minecraft.world.World;
 import org.refabricators.totemexpansion.item.TotemBase;
 
 public class TotemRepair extends TotemBase {
-
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        return null;
+        return super.use(world, user, hand);
     }
 
     @Override

@@ -5,10 +5,10 @@
       "item": "totemexpansion:totem_base"
     },
     {
-      "item": "totemexpansion:totem_head_recalling"
+      "item": "totemexpansion:totem_head_recall"
     }
   ],
   "result": {
-    "item": "totemexpansion:totem_recalling"
+    "item": "totemexpansion:totem_recall"
   }
 }

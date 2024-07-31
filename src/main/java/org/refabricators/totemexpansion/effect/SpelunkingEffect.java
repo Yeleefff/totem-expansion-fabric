@@ -75,7 +75,6 @@ public class SpelunkingEffect extends StatusEffect {
             entity.getWorld().spawnEntity(chickenEntity);
             chickenList.add(chickenEntity);
         }
-
     }
 
     @Override
