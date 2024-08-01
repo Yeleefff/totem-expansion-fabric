@@ -1,13 +1,10 @@
 package org.refabricators.totemexpansion.loot;
 
-import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
-import net.minecraft.command.argument.RegistryEntryArgumentType;
+import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.minecraft.loot.LootPool;
+import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.loot.function.EnchantedCountIncreaseLootFunction;
-import net.minecraft.loot.function.LootFunction;
-import net.minecraft.loot.function.LootFunctionTypes;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.util.Identifier;
@@ -61,14 +58,23 @@ public class ModLootTableModifiers {
         ids.add(CAVE_SPIDER_ID);
         ids.add(CREEPER_ID);
 
-//        LootTableEvents.MODIFY.register((resourceManager, lootManager, id) -> {
-//            if (ids.contains(id)) {
-//                LootPool.Builder poolBuilder = LootPool.builder()
-//                        .rolls(ConstantLootNumberProvider.create(9f))
-//                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_FALLING))
-//                        .apply(((EnchantedCountLootFunctionInvoker) EnchantedCountIncreaseLootFunction).builder(UniformLootNumberProvider.create(1f, 1f)).build());
-//                lootManager.pool(poolBuilder.build());
-//            }
-//        });
+        LootTableEvents.MODIFY.register((key, tableBuilder, source, registryLookup) -> {
+            if (ids.contains(key.getValue())) {
+                LootPool.Builder poolBuilder = LootPool.builder()
+                        .rolls(ConstantLootNumberProvider.create(1.0f))
+                        .conditionally(RandomChanceLootCondition.builder(0.25f))
+                        .apply(EnchantedCountIncreaseLootFunction.builder(registryLookup, UniformLootNumberProvider.create(0.0f, 1.0f)))
+                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_UNDYING))
+                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_BREATHING))
+                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_EXPLOSION))
+                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_FALLING))
+                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_ORES))
+                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_FIRE))
+                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_RECALL))
+                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_TIME))
+                        .with(ItemEntry.builder(ModItems.TOTEM_HEAD_REPAIR));
+                tableBuilder.pool(poolBuilder.build());
+            }
+        });
     }
 }

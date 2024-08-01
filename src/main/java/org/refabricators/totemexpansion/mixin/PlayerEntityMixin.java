@@ -28,9 +28,9 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "tick", at = @At(value = "HEAD"))
     private void injectRecall(CallbackInfo info) {
-        for (int i = 0; i < TotemExpansion.activeTotems.size(); i++) {
-            World world = (World) TotemExpansion.activeTotems.get(i).get(0);
-            PlayerEntity player = (PlayerEntity) TotemExpansion.activeTotems.get(i).get(1);
+        for (int i = 0; i < TotemExpansion.activeRecallTotems.size(); i++) {
+            World world = (World) TotemExpansion.activeRecallTotems.get(i).get(0);
+            PlayerEntity player = (PlayerEntity) TotemExpansion.activeRecallTotems.get(i).get(1);
 
             this.isSpaceEmpty = world.isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * direction, this.getZ()));
 
@@ -54,7 +54,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                     this.teleportTo(this.spawnTarget);
 
                     this.setInvulnerable(false);
-                    TotemExpansion.activeTotems.remove(i);
+                    TotemExpansion.activeRecallTotems.remove(i);
                 }
             }
         }
