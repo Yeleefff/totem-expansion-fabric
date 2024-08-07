@@ -4,10 +4,11 @@
   "version": "${version}",
 
   "name": "TotemExpansion",
-  "description": "amogus",
+  "description": "",
   "authors": [
     "HadronCollision",
-    "TechPro424"
+    "TechPro424",
+    "Yeleefff"
   ],
   "contact": {
 

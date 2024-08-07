@@ -4,11 +4,12 @@
   "package": "org.refabricators.totemexpansion.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "TryUseTotemMixin",
-    "PlayerEntityMixin",
     "InventoryAccessor",
+    "ItemStackMixin",
+    "PlayerEntityMixin",
+    "ServerWorldMixin",
     "TotemUseInvoker",
-    "ServerWorldMixin"
+    "TryUseTotemMixin"
   ],
   "client": [
   ],

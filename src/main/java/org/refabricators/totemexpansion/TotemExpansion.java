@@ -10,9 +10,9 @@ import net.minecraft.util.Identifier;
 import org.refabricators.totemexpansion.effect.SpelunkingEffect;
 import org.refabricators.totemexpansion.event.CustomTotemUsedCallback;
 import org.refabricators.totemexpansion.item.ModItems;
+import org.refabricators.totemexpansion.util.ModLootTableModifiers;
 import org.refabricators.totemexpansion.villager.ModCustomTrades;
 import org.refabricators.totemexpansion.villager.ModVillagers;
-import org.refabricators.totemexpansion.loot.ModLootTableModifiers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,10 +37,10 @@ public class TotemExpansion implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModLootTableModifiers.modifyLootTables();
 		ModItems.registerModItems();
 		ModVillagers.registerVillagers();
 		ModCustomTrades.registerCustomTrades();
 		CustomTotemUsedCallback.EVENT.register((entity, stack) -> {});
-		ModLootTableModifiers.modifyLootTables();
 	}
 }
