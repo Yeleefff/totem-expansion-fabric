@@ -5,6 +5,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Util;
 import org.refabricators.totemexpansion.item.totem.*;
 
 import static org.refabricators.totemexpansion.TotemExpansion.id;

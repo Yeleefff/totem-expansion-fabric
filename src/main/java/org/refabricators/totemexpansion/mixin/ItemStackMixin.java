@@ -14,13 +14,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements ComponentHolder, FabricItemStack {
 
-    // Mixes into ItemStack to stop an item breaking if there is a totem of repair
     @Inject(method = "Lnet/minecraft/item/ItemStack;damage(ILnet/minecraft/server/world/ServerWorld;Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Consumer;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"), cancellable = true)
     private void injectRepairTotemLogic(int amount, ServerWorld world, @Nullable ServerPlayerEntity player, Consumer<Item> breakCallback, CallbackInfo callbackInfo) {
         if (player != null) {

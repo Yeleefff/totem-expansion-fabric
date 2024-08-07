@@ -17,6 +17,17 @@
   "item.totemexpansion.totem_explosion": "Totem of Defusing",
   "item.totemexpansion.totem_ores": "Totem of Spelunking",
   "item.totemexpansion.totem_repair": "Totem of Repairing",
+  "item.totemexpansion.totem_time": "Totem of Advancing",
+  "item.totemexpansion.totem_recall": "Totem of Recall",
+
+  "tooltip.totemexpansion.totem_falling.description": "Saves you from a lethal fall (or the void)",
+  "tooltip.totemexpansion.totem_fire.description": "Saves you from accidental trips into lava",
+  "tooltip.totemexpansion.totem_breathing.description": "Saves you from the depths",
+  "tooltip.totemexpansion.totem_explosion.description": "Defuses any explosions you are involved with",
+  "tooltip.totemexpansion.totem_ores.description": "Grants the ability to detect ores around you",
+  "tooltip.totemexpansion.totem_repair.description": "Repairs a broken tool after it breaks",
+  "tooltip.totemexpansion.totem_time.description": "Advances time forward",
+  "tooltip.totemexpansion.totem_recall.description": "Sends you back home",
 
   "effect.totemexpansion.spelunking_effect": "Spelunking",
 

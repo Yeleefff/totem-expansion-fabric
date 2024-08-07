@@ -22,7 +22,6 @@ import java.util.function.Supplier;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin extends World implements StructureWorldAccess, AttachmentTarget {
-    private int count = 0;
     private int timeIncrement = 60;
 
     @Shadow
@@ -45,34 +44,3 @@ public abstract class ServerWorldMixin extends World implements StructureWorldAc
         }
     }
 }
-
-//@Mixin(ServerWorld.class)
-//public abstract class ServerWorldMixin extends World implements StructureWorldAccess, AttachmentTarget {
-//    private final Timer timer = Timer.getInstance();
-//
-//    @Shadow
-//    public abstract void setTimeOfDay(long timeOfDay);
-//
-//    public ServerWorldMixin(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey<World> worldKey, DimensionOptions dimensionOptions, WorldGenerationProgressListener worldGenerationProgressListener, boolean debugWorld, long seed, List<SpecialSpawner> spawners, boolean shouldTickTime, @Nullable RandomSequencesState randomSequencesState) {
-//        super(properties, worldKey, server.getRegistryManager(), dimensionOptions.dimensionTypeEntry(), server::getProfiler, false, debugWorld, seed, server.getMaxChainedNeighborUpdates());
-//    }
-//
-//    @Inject(method = "tick", at = @At(value = "HEAD"))
-//    public void incrementTime(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
-//        int timeIncrement = 120;
-//
-//        TotemExpansion.LOGGER.info("ServerWorld.tick (2)");
-//
-//        if (timer.isTriggered()) {
-//            TotemExpansion.LOGGER.info("ServerWorld.tick (3)");
-//
-//            this.setTimeOfDay(this.getTimeOfDay() + timeIncrement);
-//            timer.increment();
-//
-//            if (timer.counter() >= (int) (12000 / timeIncrement)) {
-//                timer.setCounter(0);
-//                timer.reset();
-//            }
-//        }
-//    }
-//}
