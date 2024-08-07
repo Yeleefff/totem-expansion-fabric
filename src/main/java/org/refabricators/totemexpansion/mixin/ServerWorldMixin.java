@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin extends World implements StructureWorldAccess, AttachmentTarget {
-    private int timeIncrement = 60;
+    private int timeIncrement = 12;
 
     @Shadow
     public abstract void setTimeOfDay(long timeOfDay);

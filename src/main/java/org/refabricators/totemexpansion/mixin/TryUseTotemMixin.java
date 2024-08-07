@@ -106,8 +106,8 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
             }
 
             if (inventory.contains(totemExplosion)) {
-                ItemStack totemInInventory = inventory.getStack(inventory.getSlotWithStack(totemExplosion));
-//                ItemStack totemInInventory = inventory.getSlotWithStack(totemExplosion) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemExplosion)) : inventory.offHand.get(0);
+//                ItemStack totemInInventory = inventory.getStack(inventory.getSlotWithStack(totemExplosion));
+                ItemStack totemInInventory = inventory.getSlotWithStack(totemExplosion) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemExplosion)) : inventory.offHand.get(0);
                 if (((TotemBase) totemInInventory.getItem()).validDamageType(source))
                     return totemInInventory;
             }

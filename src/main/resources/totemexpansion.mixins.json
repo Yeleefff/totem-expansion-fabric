@@ -4,6 +4,7 @@
   "package": "org.refabricators.totemexpansion.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ExplosionMixin",
     "InventoryAccessor",
     "ItemStackMixin",
     "PlayerEntityMixin",

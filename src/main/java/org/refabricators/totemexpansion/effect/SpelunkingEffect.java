@@ -3,16 +3,14 @@ package org.refabricators.totemexpansion.effect;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.util.math.BlockPos;
+
 import java.util.ArrayList;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 
 
 public class SpelunkingEffect extends StatusEffect {
@@ -20,7 +18,7 @@ public class SpelunkingEffect extends StatusEffect {
         super(StatusEffectCategory.NEUTRAL, 0xf4d942);
     }
 
-    ArrayList<ChickenEntity> chickenList = new ArrayList<>();
+    ArrayList<ItemEntity> totemList = new ArrayList<>();
 
     @Override
     public void onApplied(AttributeContainer attributes, int amplifier) {
@@ -61,28 +59,27 @@ public class SpelunkingEffect extends StatusEffect {
 
                     BlockPos blockPos = new BlockPos(playerPos.getX() + x, playerPos.getY() + y, playerPos.getZ() + z);
                     if (oreBlocks.contains(entity.getWorld().getBlockState(blockPos).getBlock())) {
-                        System.out.println(blockPos);
                         oreBlocksPos.add(new BlockPos(blockPos));
                     }
                 }
 
-        for (BlockPos oreBlockPos : oreBlocksPos)
-        {
-            ChickenEntity chickenEntity = EntityType.CHICKEN.create(entity.getWorld());
-            chickenEntity.setPos(oreBlockPos.getX(), oreBlockPos.getY(), oreBlockPos.getZ());
-            chickenEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, Integer.MAX_VALUE));
-            chickenEntity.setInvulnerable(true);
-            entity.getWorld().spawnEntity(chickenEntity);
-            chickenList.add(chickenEntity);
+        for (BlockPos oreBlockPos : oreBlocksPos) {
+            ItemEntity itemEntity = EntityType.ITEM.create(entity.getWorld());
+            itemEntity.setPos(oreBlockPos.getX(), oreBlockPos.getY(), oreBlockPos.getZ());
+            itemEntity.setGlowing(true);
+            itemEntity.setNoGravity(true);
+            itemEntity.setInvulnerable(true);
+            entity.getWorld().spawnEntity(itemEntity);
+            totemList.add(itemEntity);
         }
     }
 
     @Override
-    public void onRemoved(AttributeContainer attributes)
-    {
+    public void onRemoved(AttributeContainer attributes) {
         super.onRemoved(attributes);
-        for (ChickenEntity chicken : chickenList) {
-            chicken.kill();
+
+        for (ItemEntity itemEntity : totemList) {
+            itemEntity.kill();
         }
     }
 }
