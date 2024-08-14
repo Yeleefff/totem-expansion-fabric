@@ -24,7 +24,7 @@ public class TotemTime extends TotemBase {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
-        TotemExpansion.activeTimeTotems.add(0);
+        if (!world.isClient) TotemExpansion.activeTimeTotems.add(0);
 
         return super.use(world, user, hand);
     }

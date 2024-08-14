@@ -40,6 +40,7 @@ public abstract class ServerWorldMixin extends World implements StructureWorldAc
 
             if (TotemExpansion.activeTimeTotems.get(i) >= (int) (12000/timeIncrement)) {
                 TotemExpansion.activeTimeTotems.remove(i);
+                i--;
             }
         }
     }

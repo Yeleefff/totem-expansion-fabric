@@ -29,6 +29,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Inject(method = "tick", at = @At(value = "HEAD"))
     private void injectRecall(CallbackInfo info) {
         for (int i = 0; i < TotemExpansion.activeRecallTotems.size(); i++) {
+            System.out.println("i: " + i + "   Array size: " + TotemExpansion.activeRecallTotems.size());
             World world = (World) TotemExpansion.activeRecallTotems.get(i).get(0);
             PlayerEntity player = (PlayerEntity) TotemExpansion.activeRecallTotems.get(i).get(1);
 
@@ -55,6 +56,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
                     this.setInvulnerable(false);
                     TotemExpansion.activeRecallTotems.remove(i);
+                    i--;
                 }
             }
         }

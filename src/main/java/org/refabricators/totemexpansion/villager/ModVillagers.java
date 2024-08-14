@@ -17,7 +17,7 @@ import static org.refabricators.totemexpansion.TotemExpansion.id;
 
 public class ModVillagers {
     public static final RegistryKey<PointOfInterestType> WITCH_DOCTOR_POI_KEY = poiKey("witch_doctor");
-    public static final PointOfInterestType WITCH_DOCTOR_POI = registerPoi("witch_doctor", Blocks.BAMBOO_BLOCK);
+    public static final PointOfInterestType WITCH_DOCTOR_POI = registerPoi("witch_doctor", Blocks.WITHER_SKELETON_SKULL);
 
     public static final VillagerProfession WITCH_DOCTOR = registerProfession("witch_doctor", WITCH_DOCTOR_POI_KEY);
 

@@ -23,7 +23,10 @@ public class TotemRecall extends TotemBase {
 
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
-        TotemExpansion.activeRecallTotems.add(List.of(world, user));
+        if (!world.isClient) {
+            TotemExpansion.activeRecallTotems.add(List.of(world, user));
+            System.out.println("Totem added to recall list");
+        }
 
         return super.use(world, user, hand);
     }
