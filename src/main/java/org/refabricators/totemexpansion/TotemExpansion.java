@@ -1,17 +1,7 @@
 package org.refabricators.totemexpansion;
 
 import net.fabricmc.api.ModInitializer;
-
-import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.BufferAllocator;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -36,6 +26,15 @@ public class TotemExpansion implements ModInitializer {
 	public static ArrayList<List<Object>> activeRecallTotems = new ArrayList<>();
 	public static ArrayList<Integer> activeTimeTotems = new ArrayList<>();
 	public static final Identifier TEXTURE = id("textures/item/totem_spelunking");
+
+	public static final byte USE_TOTEM_FALLING = 75;
+	public static final byte USE_TOTEM_FIRE = 75;
+	public static final byte USE_TOTEM_BREATHER = 75;
+	public static final byte USE_TOTEM_EXPLOSION = 75;
+	public static final byte USE_TOTEM_ORES = 75;
+	public static final byte USE_TOTEM_REPAIR = 75;
+	public static final byte USE_TOTEM_TIME = 75;
+	public static final byte USE_TOTEM_RECALL = 75;
 
 	public static Identifier id(String path) {
 		return Identifier.of(MOD_ID, path);

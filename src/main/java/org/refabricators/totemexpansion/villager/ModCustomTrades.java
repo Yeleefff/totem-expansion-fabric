@@ -40,19 +40,19 @@ public class ModCustomTrades {
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(Items.EMERALD, 21),
                     new ItemStack(ModItems.TOTEM_HEAD_UNDYING, 1),
-                    2, 10, 0.1f));
+                    2, 10, 0.15f));
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(Items.EMERALD, 17),
                     new ItemStack(Items.ZOMBIE_HEAD, 1),
-                    2, 10, 0.15f));
+                    2, 10, 0.2f));
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(Items.EMERALD, 17),
                     new ItemStack(Items.SKELETON_SKULL, 1),
-                    2, 10, 0.15f));
+                    2, 10, 0.2f));
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(Items.EMERALD, 30),
                     new ItemStack(Items.CREEPER_HEAD, 1),
-                    2, 10, 0.15f));
+                    2, 10, 0.2f));
         });
 
         TradeOfferHelper.registerVillagerOffers(ModVillagers.WITCH_DOCTOR, 5, factories -> {

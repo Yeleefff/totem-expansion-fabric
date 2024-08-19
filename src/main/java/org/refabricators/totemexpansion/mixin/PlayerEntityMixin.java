@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Set;
 
 import static org.refabricators.totemexpansion.TotemExpansion.activeRecallTotems;
-import static org.refabricators.totemexpansion.TotemExpansion.activeTimeTotems;
 
 
 @Mixin(PlayerEntity.class)

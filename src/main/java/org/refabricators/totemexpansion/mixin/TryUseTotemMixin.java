@@ -75,13 +75,8 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
                 }
             }
 
-            if (inventory.getMainHandStack().isOf(ModItems.TOTEM_ORES) || inventory.getMainHandStack().isOf(ModItems.TOTEM_TIME) || inventory.getMainHandStack().isOf(ModItems.TOTEM_RECALL)) {
+            if (this.isAlive() && (inventory.getMainHandStack().isOf(ModItems.TOTEM_ORES) || inventory.getMainHandStack().isOf(ModItems.TOTEM_TIME) || inventory.getMainHandStack().isOf(ModItems.TOTEM_RECALL))) {
                 return inventory.getMainHandStack();
-            }
-
-            if (inventory.contains(totemUndying)) {
-                return inventory.getStack(inventory.getSlotWithStack(totemUndying));
-//                return inventory.getSlotWithStack(totemUndying) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemUndying)) : inventory.offHand.get(0);
             }
 
             if (inventory.contains(totemFalling)) {
@@ -111,7 +106,17 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
                 if (((TotemBase) totemInInventory.getItem()).validDamageType(source))
                     return totemInInventory;
             }
+
+            if (inventory.contains(totemUndying)) {
+                return inventory.getStack(inventory.getSlotWithStack(totemUndying));
+//                return inventory.getSlotWithStack(totemUndying) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemUndying)) : inventory.offHand.get(0);
+            }
+
+            else {
+                return new ItemStack(Items.AIR);
+            }
         }
+
         return itemStack;
     }
 
