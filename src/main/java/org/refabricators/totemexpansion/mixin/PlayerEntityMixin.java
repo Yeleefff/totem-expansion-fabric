@@ -15,8 +15,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 
+
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
+    // Do instance variable behave statically for mixins?
+    // If so, then I have to add some of them to each List<>
     private final int stepSize = 5;
     private int direction = 1;
     private boolean isSpaceEmpty;
@@ -28,37 +31,55 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "tick", at = @At(value = "HEAD"))
     private void injectRecall(CallbackInfo info) {
-        for (int i = 0; i < TotemExpansion.activeRecallTotems.size(); i++) {
-            System.out.println("i: " + i + "   Array size: " + TotemExpansion.activeRecallTotems.size());
-            World world = (World) TotemExpansion.activeRecallTotems.get(i).get(0);
-            PlayerEntity player = (PlayerEntity) TotemExpansion.activeRecallTotems.get(i).get(1);
+        try {
 
-            this.isSpaceEmpty = world.isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * direction, this.getZ()));
 
-            this.setInvulnerable(true);
-            if (this.isSpaceEmpty) this.setPos(this.getX(), this.getY() + stepSize * direction, this.getZ());
+            for (int i = 0; i < TotemExpansion.activeRecallTotems.size(); i++) {
+                System.out.println("i: " + i + "   ArrayList size: " + TotemExpansion.activeRecallTotems.size());
 
-            if ((!this.isSpaceEmpty && direction == 1) || this.getY() >= 600) {
-                if (player instanceof ServerPlayerEntity serverPlayerEntity) {
-                    this.direction = -1;
+                World world = (World) TotemExpansion.activeRecallTotems.get(i).get(0);
+                PlayerEntity player = (PlayerEntity) TotemExpansion.activeRecallTotems.get(i).get(1);
 
-                    this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
-                    this.setPos(this.spawnTarget.pos().getX(), this.getY(), this.spawnTarget.pos().getZ());
+                if (this.getUuidAsString().equals(player.getUuidAsString())) {
+                    System.out.println("UUIDs match");
+                    this.isSpaceEmpty = world.isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * direction, this.getZ()));
+
+                    this.setInvulnerable(true);
+                    if (this.isSpaceEmpty) this.setPos(this.getX(), this.getY() + stepSize * direction, this.getZ());
+
+                    if ((!this.isSpaceEmpty && direction == 1) || this.getY() >= 600) {
+                        if (player instanceof ServerPlayerEntity serverPlayerEntity) {
+                            System.out.println("Reached y=600 or the space above is obstructed");
+                            this.direction = -1;
+
+                            this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {
+                            });
+                            this.setPos(this.spawnTarget.pos().getX(), this.getY(), this.spawnTarget.pos().getZ());
+                        }
+                    }
+
+                    if (!this.isSpaceEmpty && direction == -1) {
+                        if (player instanceof ServerPlayerEntity serverPlayerEntity) {
+                            System.out.println("Reached the ground or the space below is obstructed");
+                            this.direction = 1;
+
+                            this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {
+                            });
+                            this.teleportTo(this.spawnTarget);
+
+                            this.setInvulnerable(false);
+                            TotemExpansion.activeRecallTotems.remove(i);
+                            System.out.println("Totem removed from recall list");
+                        }
+                    }
+
+                    break;
                 }
             }
 
-            if (!this.isSpaceEmpty && direction == -1) {
-                if (player instanceof ServerPlayerEntity serverPlayerEntity) {
-                    this.direction = 1;
-
-                    this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
-                    this.teleportTo(this.spawnTarget);
-
-                    this.setInvulnerable(false);
-                    TotemExpansion.activeRecallTotems.remove(i);
-                    i--;
-                }
-            }
+        } catch (Exception e) {
+            System.out.println("Stuff broke");
+            System.out.println(e.getMessage());
         }
     }
 

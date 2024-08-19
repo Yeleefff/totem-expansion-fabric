@@ -23,7 +23,7 @@ public class ModItems {
     public static final Item TOTEM_HEAD_ORES = registerItem("totem_head_ores", new Item(new Item.Settings()));
     public static final Item TOTEM_HEAD_REPAIR = registerItem("totem_head_repair", new Item(new Item.Settings()));
     public static final Item TOTEM_HEAD_TIME = registerItem("totem_head_time", new Item(new Item.Settings()));
-    public static final Item TOTEM_HEAD_RECALL = registerItem("totem_head_", new Item(new Item.Settings()));
+    public static final Item TOTEM_HEAD_RECALL = registerItem("totem_head_recall", new Item(new Item.Settings()));
 
     public static final Item TOTEM_FALLING = registerItem("totem_falling", new TotemFalling());
     public static final Item TOTEM_FIRE = registerItem("totem_fire", new TotemFire());
