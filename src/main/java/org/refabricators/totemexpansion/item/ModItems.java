@@ -40,6 +40,7 @@ public class ModItems {
 
     private static void addModItemsToModGroup() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
+            entries.add(TOTEM_BASE);
             entries.add(TOTEM_HEAD_UNDYING);
             entries.add(TOTEM_FALLING);
             entries.add(TOTEM_HEAD_FALLING);

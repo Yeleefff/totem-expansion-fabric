@@ -37,7 +37,7 @@ public class TotemRecall extends TotemBase {
                     }
                 }
 
-                TotemExpansion.activeRecallTotems.add(List.of(world, user));
+                TotemExpansion.activeRecallTotems.add(List.of(world, user, 1));
                 System.out.println("Totem added to recall list");
             }
         }

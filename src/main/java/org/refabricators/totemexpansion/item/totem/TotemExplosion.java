@@ -27,8 +27,5 @@ public class TotemExplosion extends TotemBase {
     }
 
     @Override
-    public void addEffects()
-    {
-        effects.add(new StatusEffectInstance(StatusEffects.REGENERATION, 200, 2));
-    }
+    public void addEffects() {}
 }

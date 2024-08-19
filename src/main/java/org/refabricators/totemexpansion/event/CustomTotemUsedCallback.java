@@ -19,10 +19,9 @@ public interface CustomTotemUsedCallback {
                 if(!(stack.getItem() instanceof TotemBase)) return;
 
                 for (CustomTotemUsedCallback listener : listeners) {
-                    // Invoke all event listeners with the provided player and death message.
                     listener.invoke(entity, stack);
 
-                    if (!stack.isOf(ModItems.TOTEM_EXPLOSION) || !stack.isOf(ModItems.TOTEM_ORES) && !stack.isOf(ModItems.TOTEM_TIME) && !stack.isOf(ModItems.TOTEM_RECALL) && !stack.isOf(ModItems.TOTEM_REPAIR)) {
+                    if (!stack.isOf(ModItems.TOTEM_EXPLOSION) && !stack.isOf(ModItems.TOTEM_ORES) && !stack.isOf(ModItems.TOTEM_TIME) && !stack.isOf(ModItems.TOTEM_RECALL) && !stack.isOf(ModItems.TOTEM_REPAIR)) {
                         entity.setHealth(1.0f);
                         entity.clearStatusEffects();
                     }

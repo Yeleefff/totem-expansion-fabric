@@ -33,7 +33,7 @@ public class TotemExpansion implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	public static final RegistryEntry<StatusEffect> SPELUNKING_EFFECT = register("spelunking_effect", new SpelunkingEffect());
-	public static ArrayList<List> activeRecallTotems = new ArrayList<>();
+	public static ArrayList<List<Object>> activeRecallTotems = new ArrayList<>();
 	public static ArrayList<Integer> activeTimeTotems = new ArrayList<>();
 	public static final Identifier TEXTURE = id("textures/item/totem_spelunking");
 

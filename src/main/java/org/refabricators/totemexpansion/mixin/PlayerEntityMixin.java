@@ -5,6 +5,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
@@ -14,14 +15,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.List;
+import java.util.Set;
+
+import static org.refabricators.totemexpansion.TotemExpansion.activeRecallTotems;
+import static org.refabricators.totemexpansion.TotemExpansion.activeTimeTotems;
 
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
-    // Do instance variable behave statically for mixins?
-    // If so, then I have to add some of them to each List<>
     private final int stepSize = 5;
-    private int direction = 1;
     private boolean isSpaceEmpty;
     private TeleportTarget spawnTarget;
 
@@ -32,43 +35,41 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     @Inject(method = "tick", at = @At(value = "HEAD"))
     private void injectRecall(CallbackInfo info) {
         try {
-
-
-            for (int i = 0; i < TotemExpansion.activeRecallTotems.size(); i++) {
-                System.out.println("i: " + i + "   ArrayList size: " + TotemExpansion.activeRecallTotems.size());
-
-                World world = (World) TotemExpansion.activeRecallTotems.get(i).get(0);
-                PlayerEntity player = (PlayerEntity) TotemExpansion.activeRecallTotems.get(i).get(1);
+            for (int i = 0; i < activeRecallTotems.size(); i++) {
+                World world = (World) activeRecallTotems.get(i).get(0);
+                PlayerEntity player = (PlayerEntity) activeRecallTotems.get(i).get(1);
+                Integer direction = (Integer) activeRecallTotems.get(i).get(2);
 
                 if (this.getUuidAsString().equals(player.getUuidAsString())) {
-                    System.out.println("UUIDs match");
                     this.isSpaceEmpty = world.isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * direction, this.getZ()));
 
                     this.setInvulnerable(true);
+                    this.setNoGravity(true);
                     if (this.isSpaceEmpty) this.setPos(this.getX(), this.getY() + stepSize * direction, this.getZ());
 
                     if ((!this.isSpaceEmpty && direction == 1) || this.getY() >= 600) {
                         if (player instanceof ServerPlayerEntity serverPlayerEntity) {
                             System.out.println("Reached y=600 or the space above is obstructed");
-                            this.direction = -1;
+                            direction = -1;
+                            activeRecallTotems.set(i, List.of(world, player, direction));
 
-                            this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {
-                            });
-                            this.setPos(this.spawnTarget.pos().getX(), this.getY(), this.spawnTarget.pos().getZ());
+                            this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
+                            if (world instanceof ServerWorld serverWorld) this.teleport(serverWorld, this.spawnTarget.pos().getX(), this.getY(), this.spawnTarget.pos().getZ(), Set.of(), this.getYaw(), this.getPitch());
                         }
                     }
+
+                    this.isSpaceEmpty = world.isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * direction, this.getZ()));
 
                     if (!this.isSpaceEmpty && direction == -1) {
                         if (player instanceof ServerPlayerEntity serverPlayerEntity) {
                             System.out.println("Reached the ground or the space below is obstructed");
-                            this.direction = 1;
 
-                            this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {
-                            });
+                            this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
                             this.teleportTo(this.spawnTarget);
 
+                            this.setNoGravity(false);
                             this.setInvulnerable(false);
-                            TotemExpansion.activeRecallTotems.remove(i);
+                            activeRecallTotems.remove(i);
                             System.out.println("Totem removed from recall list");
                         }
                     }
@@ -77,9 +78,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 }
             }
 
-        } catch (Exception e) {
-            System.out.println("Stuff broke");
-            System.out.println(e.getMessage());
+        } catch (IndexOutOfBoundsException e) {
+            TotemExpansion.LOGGER.warn("Error in PlayerEntityMixin: " + e.getMessage());
         }
     }
 
