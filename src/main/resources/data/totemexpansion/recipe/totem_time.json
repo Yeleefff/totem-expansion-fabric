@@ -5,10 +5,11 @@
       "item": "totemexpansion:totem_base"
     },
     {
-      "item": "totemexpansion:totem_head_fire"
+      "item": "totemexpansion:totem_head_time"
     }
   ],
   "result": {
-    "item": "totemexpansion:totem_fire"
+    "count": 1,
+    "id": "totemexpansion:totem_time"
   }
 }

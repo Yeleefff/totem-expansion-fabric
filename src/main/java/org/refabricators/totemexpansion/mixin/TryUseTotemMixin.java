@@ -41,7 +41,7 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
     private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, ItemStack itemStack) {
 
         if(itemStack.getItem() instanceof TotemBase && ((TotemBase) itemStack.getItem()).validDamageType(source) || itemStack.isOf(ModItems.TOTEM_ORES) || itemStack.isOf(ModItems.TOTEM_TIME) || itemStack.isOf(ModItems.TOTEM_RECALL) || itemStack.isOf(ModItems.TOTEM_REPAIR)) {
-            CustomTotemUsedCallback.EVENT.invoker().invoke(((LivingEntity) (Object) this), itemStack);
+            CustomTotemUsedCallback.EVENT.invoker().invoke(((LivingEntity) (Object) this), itemStack, source);
             cir.setReturnValue(itemStack != null);
         }
     }

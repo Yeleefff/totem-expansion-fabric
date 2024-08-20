@@ -5,10 +5,11 @@
       "item": "totemexpansion:totem_base"
     },
     {
-      "item": "totemexpansion:totem_head_repair"
+      "item": "totemexpansion:totem_head_ores"
     }
   ],
   "result": {
-    "item": "totemexpansion:totem_repair"
+    "count": 1,
+    "id": "totemexpansion:totem_ores"
   }
 }

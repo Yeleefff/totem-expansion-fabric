@@ -5,10 +5,11 @@
       "item": "totemexpansion:totem_base"
     },
     {
-      "item": "totemexpansion:totem_head_breathing"
+      "item": "totemexpansion:totem_head_explosion"
     }
   ],
   "result": {
-    "item": "totemexpansion:totem_breathing"
+    "count": 1,
+    "id": "totemexpansion:totem_explosion"
   }
 }

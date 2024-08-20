@@ -5,10 +5,11 @@
       "item": "totemexpansion:totem_base"
     },
     {
-      "item": "totemexpansion:totem_head_undying"
+      "item": "totemexpansion:totem_head_falling"
     }
   ],
   "result": {
-    "item": "minecraft:totem_of_undying"
+    "count": 1,
+    "id": "totemexpansion:totem_falling"
   }
 }

@@ -26,7 +26,6 @@ public abstract class ExplosionMixin {
 
             if (!(!(entity instanceof PlayerEntity) || (player = (PlayerEntity)entity).isSpectator() || player.isCreative() && player.getAbilities().flying)) {
                 if (player.getInventory().contains(ModItems.TOTEM_EXPLOSION.getDefaultStack())) {
-                    System.out.println(this.damageSource);
                     ((TotemUseInvoker) player).useTotem(this.damageSource);
                     ((Explosion)(Object) this).getAffectedBlocks().clear();
 

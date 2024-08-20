@@ -23,7 +23,7 @@ import static org.refabricators.totemexpansion.TotemExpansion.activeRecallTotems
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
-    private final int stepSize = 5;
+    private final int stepSize = 6;
     private boolean isSpaceEmpty;
     private TeleportTarget spawnTarget;
 
@@ -66,6 +66,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                             this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
                             this.teleportTo(this.spawnTarget);
 
+                            this.fallDistance = 0;
                             this.setNoGravity(false);
                             this.setInvulnerable(false);
                             activeRecallTotems.remove(i);

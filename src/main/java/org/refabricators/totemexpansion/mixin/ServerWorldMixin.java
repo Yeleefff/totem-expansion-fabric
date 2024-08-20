@@ -38,7 +38,7 @@ public abstract class ServerWorldMixin extends World implements StructureWorldAc
             this.setTimeOfDay(this.getTimeOfDay() + timeIncrement);
             TotemExpansion.activeTimeTotems.set(i, TotemExpansion.activeTimeTotems.get(i) + 1);
 
-            if (TotemExpansion.activeTimeTotems.get(i) >= (int) (12000/timeIncrement)) {
+            if (TotemExpansion.activeTimeTotems.get(i) >= (int) (10000/timeIncrement)) {
                 TotemExpansion.activeTimeTotems.remove(i);
                 i--;
             }
