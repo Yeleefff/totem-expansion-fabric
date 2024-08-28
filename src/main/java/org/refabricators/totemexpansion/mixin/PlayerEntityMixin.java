@@ -48,7 +48,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
                     if ((!this.isSpaceEmpty && direction == 1) || this.getY() >= 600) {
                         if (player instanceof ServerPlayerEntity serverPlayerEntity) {
-                            System.out.println("Reached y=600 or the space above is obstructed");
                             direction = -1;
                             activeRecallTotems.set(i, List.of(world, player, direction));
 
@@ -61,8 +60,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
                     if (!this.isSpaceEmpty && direction == -1) {
                         if (player instanceof ServerPlayerEntity serverPlayerEntity) {
-                            System.out.println("Reached the ground or the space below is obstructed");
-
                             this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
                             this.teleportTo(this.spawnTarget);
 
@@ -70,7 +67,6 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                             this.setNoGravity(false);
                             this.setInvulnerable(false);
                             activeRecallTotems.remove(i);
-                            System.out.println("Totem removed from recall list");
                         }
                     }
 

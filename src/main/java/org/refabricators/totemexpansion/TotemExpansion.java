@@ -1,12 +1,16 @@
 package org.refabricators.totemexpansion;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.minecraft.block.Block;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.*;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.EntityRenderers;
+import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -14,8 +18,6 @@ import net.minecraft.util.Identifier;
 import org.refabricators.totemexpansion.effect.SpelunkingEffect;
 import org.refabricators.totemexpansion.event.CustomTotemUsedCallback;
 import org.refabricators.totemexpansion.item.ModItems;
-import org.refabricators.totemexpansion.item.TotemBase;
-import org.refabricators.totemexpansion.mixin.InventoryAccessor;
 import org.refabricators.totemexpansion.util.ModLootTableModifiers;
 import org.refabricators.totemexpansion.villager.ModCustomTrades;
 import org.refabricators.totemexpansion.villager.ModVillagers;
@@ -24,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TotemExpansion implements ModInitializer {
 	public static final String MOD_ID = "totemexpansion";
@@ -32,7 +35,6 @@ public class TotemExpansion implements ModInitializer {
 	public static final RegistryEntry<StatusEffect> SPELUNKING_EFFECT = register("spelunking_effect", new SpelunkingEffect());
 	public static ArrayList<List<Object>> activeRecallTotems = new ArrayList<>();
 	public static ArrayList<Integer> activeTimeTotems = new ArrayList<>();
-	public static final Identifier TEXTURE = id("textures/item/totem_spelunking");
 
 	public static final byte USE_TOTEM_FALLING = 75;
 	public static final byte USE_TOTEM_FIRE = 76;

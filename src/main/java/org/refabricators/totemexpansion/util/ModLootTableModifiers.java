@@ -51,7 +51,7 @@ public class ModLootTableModifiers {
 
     private static ArrayList<Identifier> ids = new ArrayList<>();
 
-    public static void modifyLootTables() {
+    private static void genModIDs() {
         ids.add(ZOMBIE_ID);
         ids.add(SKELETON_ID);
         ids.add(SPIDER_ID);
@@ -87,6 +87,10 @@ public class ModLootTableModifiers {
         ids.add(ZOGLIN_ID);
         ids.add(ZOMBIE_VILLAGER_ID);
         ids.add(ZOMBIFIED_PIGLIN_ID);
+    }
+
+    public static void modifyLootTables() {
+        genModIDs();
 
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registryLookup) -> {
             if (ids.contains(key.getValue())) {
