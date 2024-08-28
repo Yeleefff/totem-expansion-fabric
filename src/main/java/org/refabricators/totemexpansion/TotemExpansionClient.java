@@ -21,10 +21,10 @@ import static org.refabricators.totemexpansion.TotemExpansion.id;
 
 public class TotemExpansionClient implements ClientModInitializer {
     private static final Identifier TEXTURE = id("textures/item/totem_head_ores.png");
-    public static ArrayList<BlockPos> oreBlockPoses = new ArrayList<>();
+    private static ArrayList<BlockPos> oreBlockPoses = new ArrayList<>();
     private static ArrayList<Block> oreBlocks = new ArrayList<>();
     private static final float size = 8f;
-    private static final int range = 30;
+    private static final int range = 12;
 
     private void genOreBlocksArray() {
         oreBlocks.add(Blocks.COAL_ORE);
@@ -57,7 +57,7 @@ public class TotemExpansionClient implements ClientModInitializer {
 
             if (client.player != null && client.world != null && client.player.hasStatusEffect(TotemExpansion.SPELUNKING_EFFECT)) {
 
-                if (client.world.getTime() % 10 == 0 || oreBlockPoses.isEmpty()) {
+                if (client.world.getTime() % 15 == 0 || oreBlockPoses.isEmpty()) {
                     oreBlockPoses.clear();
                     BlockPos playerPos = client.player.getBlockPos();
 
