@@ -1,5 +1,6 @@
 package org.refabricators.totemexpansion.mixin;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
@@ -10,12 +11,17 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import org.refabricators.totemexpansion.TotemExpansion;
+import org.refabricators.totemexpansion.TotemExpansionClient;
+import org.refabricators.totemexpansion.network.SyncPlayerDataS2C;
+import org.refabricators.totemexpansion.util.PlayerData;
+import org.refabricators.totemexpansion.util.StateSaverAndLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.refabricators.totemexpansion.TotemExpansion.activeRecallTotems;
@@ -33,49 +39,50 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "tick", at = @At(value = "HEAD"))
     private void injectRecall(CallbackInfo info) {
-        try {
-            for (int i = 0; i < activeRecallTotems.size(); i++) {
-                World world = (World) activeRecallTotems.get(i).get(0);
-                PlayerEntity player = (PlayerEntity) activeRecallTotems.get(i).get(1);
-                Integer direction = (Integer) activeRecallTotems.get(i).get(2);
+        PlayerEntity player = (PlayerEntity)(Object) this;
+        PlayerData playerState;
 
-                if (this.getUuidAsString().equals(player.getUuidAsString())) {
-                    this.isSpaceEmpty = world.isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * direction, this.getZ()));
+        if (this.getWorld().isClient) {
+            playerState = TotemExpansionClient.playerState;
+        } else {
+            playerState = StateSaverAndLoader.getPlayerState(player);
+        }
 
-                    this.setInvulnerable(true);
-                    this.setNoGravity(true);
-                    if (this.isSpaceEmpty) this.setPos(this.getX(), this.getY() + stepSize * direction, this.getZ());
+        if (playerState.usedRecallTotem) {
+            this.isSpaceEmpty = this.getWorld().isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * playerState.recallDirection, this.getZ()));
 
-                    if ((!this.isSpaceEmpty && direction == 1) || this.getY() >= 600) {
-                        if (player instanceof ServerPlayerEntity serverPlayerEntity) {
-                            direction = -1;
-                            activeRecallTotems.set(i, List.of(world, player, direction));
+            this.setInvulnerable(true);
+            this.setNoGravity(true);
+            if (this.isSpaceEmpty)
+                this.setPos(this.getX(), this.getY() + stepSize * playerState.recallDirection, this.getZ());
 
-                            this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
-                            if (world instanceof ServerWorld serverWorld) this.teleport(serverWorld, this.spawnTarget.pos().getX(), this.getY(), this.spawnTarget.pos().getZ(), Set.of(), this.getYaw(), this.getPitch());
-                        }
-                    }
+            if ((!this.isSpaceEmpty && playerState.recallDirection == 1) || this.getY() >= 600) {
+                if (player instanceof ServerPlayerEntity serverPlayerEntity) {
+                    playerState.recallDirection = -1;
+                    ServerPlayNetworking.send(serverPlayerEntity, new SyncPlayerDataS2C(playerState.usedRecallTotem, playerState.recallDirection));
 
-                    this.isSpaceEmpty = world.isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * direction, this.getZ()));
-
-                    if (!this.isSpaceEmpty && direction == -1) {
-                        if (player instanceof ServerPlayerEntity serverPlayerEntity) {
-                            this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
-                            this.teleportTo(this.spawnTarget);
-
-                            this.fallDistance = 0;
-                            this.setNoGravity(false);
-                            this.setInvulnerable(false);
-                            activeRecallTotems.remove(i);
-                        }
-                    }
-
-                    break;
+                    this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
+                    if (this.getWorld() instanceof ServerWorld serverWorld)
+                        this.teleport(serverWorld, this.spawnTarget.pos().getX(), this.getY(), this.spawnTarget.pos().getZ(), Set.of(), this.getYaw(), this.getPitch());
                 }
             }
 
-        } catch (IndexOutOfBoundsException e) {
-            TotemExpansion.LOGGER.warn("Error in PlayerEntityMixin: " + e.getMessage());
+            this.isSpaceEmpty = this.getWorld().isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * playerState.recallDirection, this.getZ()));
+
+            if (!this.isSpaceEmpty && playerState.recallDirection == -1) {
+                if (player instanceof ServerPlayerEntity serverPlayerEntity) {
+                    this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
+                    this.teleportTo(this.spawnTarget);
+
+                    this.fallDistance = 0;
+                    this.setNoGravity(false);
+                    this.setInvulnerable(false);
+
+                    playerState.usedRecallTotem = false;
+                    playerState.recallDirection = 1;
+                    ServerPlayNetworking.send(serverPlayerEntity, new SyncPlayerDataS2C(playerState.usedRecallTotem, playerState.recallDirection));
+                }
+            }
         }
     }
 

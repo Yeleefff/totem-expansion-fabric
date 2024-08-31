@@ -1,8 +1,10 @@
 package org.refabricators.totemexpansion.item.totem;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -13,8 +15,14 @@ import net.minecraft.world.dimension.DimensionTypes;
 import org.refabricators.totemexpansion.TotemExpansion;
 import org.refabricators.totemexpansion.item.TotemBase;
 import org.refabricators.totemexpansion.mixin.TotemUseInvoker;
+import org.refabricators.totemexpansion.network.SyncPlayerDataS2C;
+import org.refabricators.totemexpansion.util.PlayerData;
+import org.refabricators.totemexpansion.util.StateSaverAndLoader;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class TotemRecall extends TotemBase {
     @Override
@@ -28,17 +36,15 @@ public class TotemRecall extends TotemBase {
             ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
 
             if (!world.isClient) {
-                for (int i = 0; i < TotemExpansion.activeRecallTotems.size(); i++) {
-                    PlayerEntity player = (PlayerEntity) TotemExpansion.activeRecallTotems.get(i).get(1);
+                PlayerData playerState = StateSaverAndLoader.getPlayerState(user);
 
-                    if (user.getUuidAsString().equals(player.getUuidAsString())) {
-                        TotemExpansion.activeRecallTotems.remove(i);
-                        break;
-                    }
+                if (playerState.usedRecallTotem) {
+                    playerState.recallDirection = 1;
+                } else {
+                    playerState.usedRecallTotem = true;
                 }
 
-                TotemExpansion.activeRecallTotems.add(List.of(world, user, 1));
-                System.out.println("Totem added to recall list");
+                ServerPlayNetworking.send((ServerPlayerEntity) user, new SyncPlayerDataS2C(playerState.usedRecallTotem, playerState.recallDirection));
             }
         }
 

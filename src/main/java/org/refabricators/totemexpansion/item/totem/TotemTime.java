@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import org.refabricators.totemexpansion.TotemExpansion;
 import org.refabricators.totemexpansion.item.TotemBase;
 import org.refabricators.totemexpansion.mixin.TotemUseInvoker;
+import org.refabricators.totemexpansion.util.StateSaverAndLoader;
 
 import java.util.List;
 
@@ -24,7 +25,11 @@ public class TotemTime extends TotemBase {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
-        if (!world.isClient) TotemExpansion.activeTimeTotems.add(0);
+
+        if (!world.isClient) {
+            StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(world.getServer());
+            serverState.activeTimeTotems.add(0);
+        }
 
         return super.use(world, user, hand);
     }

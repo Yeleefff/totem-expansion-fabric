@@ -2,10 +2,13 @@ package org.refabricators.totemexpansion;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -13,6 +16,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
+import org.refabricators.totemexpansion.network.SyncPlayerDataS2C;
+import org.refabricators.totemexpansion.util.PlayerData;
 
 import java.util.ArrayList;
 
@@ -20,6 +25,7 @@ import static org.refabricators.totemexpansion.TotemExpansion.id;
 
 
 public class TotemExpansionClient implements ClientModInitializer {
+    public static PlayerData playerState = new PlayerData();
     private static final Identifier TEXTURE = id("textures/item/totem_head_ores.png");
     private static ArrayList<BlockPos> oreBlockPoses = new ArrayList<>();
     private static ArrayList<Block> oreBlocks = new ArrayList<>();
@@ -50,6 +56,11 @@ public class TotemExpansionClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        ClientPlayNetworking.registerGlobalReceiver(SyncPlayerDataS2C.ID, (payload, context) -> {
+            playerState.usedRecallTotem = payload.usedRecallTotem();
+            playerState.recallDirection = payload.recallDirection();
+        });
+
         this.genOreBlocksArray();
 
         WorldRenderEvents.BEFORE_DEBUG_RENDER.register((context) -> {

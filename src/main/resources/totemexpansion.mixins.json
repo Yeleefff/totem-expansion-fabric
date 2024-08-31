@@ -8,7 +8,6 @@
     "InventoryAccessor",
     "ItemStackMixin",
     "PlayerEntityMixin",
-    "ServerWorldMixin",
     "TotemUseInvoker",
     "TryUseTotemMixin"
   ],
