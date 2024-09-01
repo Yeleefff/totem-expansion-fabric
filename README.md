@@ -1,6 +1,6 @@
 # Totem Expansion
 
-This is a fabric port of the original Totem Expansion by Lemonszz. Totem Expansion adds a variety of new totems and mechanics to the game.
+This is a fabric port of the original [Totem Expansion](https://www.curseforge.com/minecraft/mc-mods/totem-expansion) by Lemonszz. Totem Expansion adds a variety of new totems and mechanics to the game.
 
 ### General
 This mod now allows the totem of undying (and all new totems) to work in any slot. All totems are also craftable, consisting of a totem base and a totem head of their respective type. Totem bases can be crafted with 4 clay and a stick. Totem heads are dropped occasionally by mobs or can be purchased from the new villager, the Witch Doctor. The Witch Doctor's profession block is a wither skeleton skull, so he will not spawn naturally. Additionally, holding shift while levitating will now cause the player to slowly descend.
