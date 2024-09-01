@@ -1,27 +1,13 @@
 package org.refabricators.totemexpansion;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.*;
-import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.EntityRenderers;
-import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.tick.WorldTickScheduler;
 import org.refabricators.totemexpansion.effect.SpelunkingEffect;
-import org.refabricators.totemexpansion.event.CustomTotemUsedCallback;
 import org.refabricators.totemexpansion.event.ModEventCallbacks;
 import org.refabricators.totemexpansion.item.ModItems;
 import org.refabricators.totemexpansion.network.SyncPlayerDataS2C;
@@ -33,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class TotemExpansion implements ModInitializer {
 	public static final String MOD_ID = "totemexpansion";

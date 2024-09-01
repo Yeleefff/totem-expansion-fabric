@@ -43,7 +43,7 @@ public abstract class ClientPlayNetworkHandlerMixin extends ClientCommonNetworkH
                 case 21 -> {
                     this.client.getSoundManager().play(new GuardianAttackSoundInstance((GuardianEntity) entity));
                 }
-                case 35, 75, 76, 78, 79, 80, 81, 82-> {
+                case 35, 75, 76, 77, 78, 79, 80, 81, 82-> {
                     int i = 40;
                     this.client.particleManager.addEmitter(entity, ParticleTypes.TOTEM_OF_UNDYING, 30);
                     this.world.playSound(entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ITEM_TOTEM_USE, entity.getSoundCategory(), 1.0f, 1.0f, false);

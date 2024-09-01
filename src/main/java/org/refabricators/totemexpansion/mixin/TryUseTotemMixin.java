@@ -80,36 +80,31 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
             }
 
             if (inventory.contains(totemFalling)) {
-                ItemStack totemInInventory = inventory.getStack(inventory.getSlotWithStack(totemFalling));
-//                ItemStack totemInInventory = inventory.getSlotWithStack(totemFalling) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemFalling)) : inventory.offHand.get(0);
+                ItemStack totemInInventory = inventory.getSlotWithStack(totemFalling) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemFalling)) : inventory.offHand.get(0);
                 if (((TotemBase) totemInInventory.getItem()).validDamageType(source))
                     return totemInInventory;
             }
 
             if (inventory.contains(totemFire)) {
-                ItemStack totemInInventory = inventory.getStack(inventory.getSlotWithStack(totemFire));
-//                ItemStack totemInInventory = inventory.getSlotWithStack(totemFire) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemFire)) : inventory.offHand.get(0);
+                ItemStack totemInInventory = inventory.getSlotWithStack(totemFire) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemFire)) : inventory.offHand.get(0);
                 if (((TotemBase) totemInInventory.getItem()).validDamageType(source))
                     return totemInInventory;
             }
 
             if (inventory.contains(totemBreathing)) {
-                ItemStack totemInInventory = inventory.getStack(inventory.getSlotWithStack(totemBreathing));
-//                ItemStack totemInInventory = inventory.getSlotWithStack(totemBreathing) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemBreathing)) : inventory.offHand.get(0);
+                ItemStack totemInInventory = inventory.getSlotWithStack(totemBreathing) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemBreathing)) : inventory.offHand.get(0);
                 if (((TotemBase) totemInInventory.getItem()).validDamageType(source))
                     return totemInInventory;
             }
 
             if (inventory.contains(totemExplosion)) {
-//                ItemStack totemInInventory = inventory.getStack(inventory.getSlotWithStack(totemExplosion));
                 ItemStack totemInInventory = inventory.getSlotWithStack(totemExplosion) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemExplosion)) : inventory.offHand.get(0);
                 if (((TotemBase) totemInInventory.getItem()).validDamageType(source))
                     return totemInInventory;
             }
 
             if (inventory.contains(totemUndying)) {
-                return inventory.getStack(inventory.getSlotWithStack(totemUndying));
-//                return inventory.getSlotWithStack(totemUndying) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemUndying)) : inventory.offHand.get(0);
+                return inventory.getSlotWithStack(totemUndying) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemUndying)) : inventory.offHand.get(0);
             }
 
             else {
