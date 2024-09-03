@@ -44,8 +44,6 @@ public class TotemExpansion implements ModInitializer {
 		return Registry.registerReference(Registries.STATUS_EFFECT, id(id), statusEffect);
 	}
 
-	public static ArrayList<Object> bob = new ArrayList<>();
-
 	@Override
 	public void onInitialize() {
 		PayloadTypeRegistry.playS2C().register(SyncPlayerDataS2C.ID, SyncPlayerDataS2C.CODEC);

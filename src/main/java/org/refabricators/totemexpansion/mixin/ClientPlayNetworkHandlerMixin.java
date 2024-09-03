@@ -35,6 +35,7 @@ public abstract class ClientPlayNetworkHandlerMixin extends ClientCommonNetworkH
     public void onEntityStatus(EntityStatusS2CPacket packet) {
         NetworkThreadUtils.forceMainThread(packet, this, this.client);
         Entity entity = packet.getEntity(this.world);
+
         if (entity != null) {
             switch (packet.getStatus()) {
                 case 63 -> {
