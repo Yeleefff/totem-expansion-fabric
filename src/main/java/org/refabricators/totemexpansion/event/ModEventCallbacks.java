@@ -1,20 +1,10 @@
 package org.refabricators.totemexpansion.event;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.GameRules;
-import org.refabricators.totemexpansion.util.PlayerData;
 import org.refabricators.totemexpansion.util.StateSaverAndLoader;
-
-import static org.refabricators.totemexpansion.TotemExpansion.id;
 
 public class ModEventCallbacks {
     private static int timeIncrement = 20;

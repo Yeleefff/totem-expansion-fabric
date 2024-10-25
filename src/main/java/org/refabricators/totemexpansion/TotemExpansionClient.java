@@ -82,7 +82,6 @@ public class TotemExpansionClient implements ClientModInitializer {
                             }
                         }
                     }
-                }
 
                 RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -98,8 +97,8 @@ public class TotemExpansionClient implements ClientModInitializer {
                     matrices.scale(-1 / 32f, -1 / 32f, 1 / 32f);
                     matrices.translate(0, Math.sin((client.world.getTime() + blockPos.getX() * (size/2) + blockPos.getY() * (size/2) + blockPos.getZ() * (size/2)) / size) * 0.9f, 0);
                     matrices.multiply(RotationAxis.POSITIVE_Y.rotation((client.world.getTime() + blockPos.getX() * (size/2) + blockPos.getY() * (size/2) + blockPos.getZ() * (size/2)) / 20.0f));
-//                    matrices.multiply(RotationAxis.POSITIVE_Y.rotation((float) Math.atan2(cameraPos.z - blockPos.getZ(), cameraPos.x - blockPos.getX())));
                     Matrix4f tMatrix = matrices.peek().getPositionMatrix();
+//                    Could probably just have used client.getItemRenderer().renderItem()
 
                     buffer.vertex(tMatrix, 0f, -size, -size).texture(0f, 0f);
                     buffer.vertex(tMatrix, 0f, size, -size).texture(0f, 1f);
