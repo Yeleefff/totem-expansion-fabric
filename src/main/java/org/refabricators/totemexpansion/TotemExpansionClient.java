@@ -82,6 +82,7 @@ public class TotemExpansionClient implements ClientModInitializer {
                             }
                         }
                     }
+                }
 
                 RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
