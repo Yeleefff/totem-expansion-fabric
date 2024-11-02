@@ -4,11 +4,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
-import org.refabricators.totemexpansion.TotemExpansion;
 import org.refabricators.totemexpansion.item.TotemBase;
 import org.refabricators.totemexpansion.mixin.TotemUseInvoker;
 import org.refabricators.totemexpansion.util.StateSaverAndLoader;
@@ -23,7 +22,7 @@ public class TotemTime extends TotemBase {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
 
         if (!world.isClient) {

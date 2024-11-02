@@ -58,7 +58,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
                     this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
                     if (this.getWorld() instanceof ServerWorld serverWorld)
-                        this.teleport(serverWorld, this.spawnTarget.pos().getX(), this.getY(), this.spawnTarget.pos().getZ(), Set.of(), this.getYaw(), this.getPitch());
+                        this.teleport(serverWorld, this.spawnTarget.position().getX(), this.getY(), this.spawnTarget.position().getZ(), Set.of(), this.getYaw(), this.getPitch(), false);
                 }
             }
 

@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
@@ -84,7 +85,7 @@ public class TotemExpansionClient implements ClientModInitializer {
                     }
                 }
 
-                RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+                RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX);
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 RenderSystem.setShaderTexture(0, TEXTURE);
 
