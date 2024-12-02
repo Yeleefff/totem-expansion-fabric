@@ -65,9 +65,9 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             this.isSpaceEmpty = this.getWorld().isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * playerState.recallDirection, this.getZ()));
 
             if (!this.isSpaceEmpty && playerState.recallDirection == -1) {
-                if (player instanceof ServerPlayerEntity serverPlayerEntity) {
+                if (player instanceof ServerPlayerEntity serverPlayerEntity && this.getWorld() instanceof ServerWorld serverWorld) {
                     this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
-                    this.teleportTo(this.spawnTarget);
+                    this.teleport(serverWorld, this.spawnTarget.position().getX(), this.getY(), this.spawnTarget.position().getZ(), Set.of(), this.getYaw(), this.getPitch(), false);
 
                     this.fallDistance = 0;
                     this.setNoGravity(false);

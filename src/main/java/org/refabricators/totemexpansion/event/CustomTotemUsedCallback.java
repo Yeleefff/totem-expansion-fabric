@@ -18,26 +18,19 @@ public interface CustomTotemUsedCallback {
 
       Event<CustomTotemUsedCallback> EVENT = EventFactory.createArrayBacked(CustomTotemUsedCallback.class,
             (listeners) -> (LivingEntity entity, ItemStack stack, DamageSource source) -> {
-
                 if(!(stack.getItem() instanceof TotemBase)) return;
 
                 for (CustomTotemUsedCallback listener : listeners) {
                     listener.invoke(entity, stack, source);
 
-                    if (!stack.isOf(ModItems.TOTEM_EXPLOSION) && !stack.isOf(ModItems.TOTEM_ORES) && !stack.isOf(ModItems.TOTEM_TIME) && !stack.isOf(ModItems.TOTEM_RECALL) && !stack.isOf(ModItems.TOTEM_REPAIR)) {
+                    if (stack.isOf(ModItems.TOTEM_FALLING)) {
                         entity.setHealth(1.0f);
-                        entity.clearStatusEffects();
-                    }
-
-                    ((TotemBase) stack.getItem()).onTotemUse(entity);
-
-                    if (stack.isOf(Items.TOTEM_OF_UNDYING)) {
-                        entity.getWorld().sendEntityStatus(entity, EntityStatuses.USE_TOTEM_OF_UNDYING);
-                    } else if (stack.isOf(ModItems.TOTEM_FALLING)) {
                         entity.getWorld().sendEntityStatus(entity, TotemExpansion.USE_TOTEM_FALLING);
                     } else if (stack.isOf(ModItems.TOTEM_FIRE)) {
+                        entity.setHealth(1.0f);
                         entity.getWorld().sendEntityStatus(entity, TotemExpansion.USE_TOTEM_FIRE);
                     } else if (stack.isOf(ModItems.TOTEM_BREATHING)) {
+                        entity.setHealth(1.0f);
                         entity.getWorld().sendEntityStatus(entity, TotemExpansion.USE_TOTEM_BREATHING);
                     } else if (stack.isOf(ModItems.TOTEM_EXPLOSION)) {
                         entity.getWorld().sendEntityStatus(entity, TotemExpansion.USE_TOTEM_EXPLOSION);

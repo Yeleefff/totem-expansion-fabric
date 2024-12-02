@@ -19,12 +19,12 @@ import java.util.function.Consumer;
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements ComponentHolder, FabricItemStack {
 
-    @Inject(method = "Lnet/minecraft/item/ItemStack;damage(ILnet/minecraft/server/world/ServerWorld;Lnet/minecraft/server/network/ServerPlayerEntity;Ljava/util/function/Consumer;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"), cancellable = true)
-    private void injectRepairTotemLogic(int amount, ServerWorld world, @Nullable ServerPlayerEntity player, Consumer<Item> breakCallback, CallbackInfo callbackInfo) {
+    @Inject(method = "onDurabilityChange", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"), cancellable = true)
+    private void injectRepairTotemLogic(int damage, @Nullable ServerPlayerEntity player, Consumer<Item> breakCallback, CallbackInfo callbackInfo) {
         if (player != null) {
 
             if (player.getInventory().contains(ModItems.TOTEM_REPAIR.getDefaultStack())) {
-                ((TotemUseInvoker) player).useTotem(world.getDamageSources().generic());
+                ((TotemUseInvoker) player).useTotem(player.getWorld().getDamageSources().generic());
                 callbackInfo.cancel();
             }
         }
