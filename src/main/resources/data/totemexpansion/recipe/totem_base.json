@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "S": {
-      "item": "minecraft:stick"
-    },
-    "C": {
-      "item": "minecraft:clay_ball"
-    }
+    "S": "minecraft:stick",
+    "C": "minecraft:clay_ball"
   },
   "pattern": [
     " S ",

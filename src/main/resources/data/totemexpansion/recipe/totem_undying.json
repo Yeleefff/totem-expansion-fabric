@@ -1,12 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "totemexpansion:totem_base"
-    },
-    {
-      "item": "totemexpansion:totem_head_undying"
-    }
+    "totemexpansion:totem_base",
+    "totemexpansion:totem_head_undying"
   ],
   "result": {
     "count": 1,
