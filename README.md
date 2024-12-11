@@ -8,7 +8,7 @@ This mod now allows the totem of undying (and all new totems) to work in any slo
 ### New Totems
 - Totem of Ascending - saves the player from a deadly fall
 - Totem of Smoldering - saves the player from lava or fire
-- Totem of Breathing - saves the player from the drowning
+- Totem of Breathing - saves the player from drowning
 - Totem of Defusing - defuses explosions
 - Totem of Repairing - repairs an item if it breaks
 - Totem of Spelunking - reveals ore around the player in a 30 block radius
