@@ -1,11 +1,13 @@
 package org.refabricators.totemexpansion.item.totem;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -23,15 +25,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class TotemRecall extends TotemBase {
-    @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
-        tooltip.add(Text.translatable("tooltip.totemexpansion.totem_recall.description").formatted(Formatting.GRAY));
-        super.appendTooltip(stack, context, tooltip, type);
+    public TotemRecall(Settings settings) {
+        super(settings);
     }
 
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    @Override
+    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
+        textConsumer.accept(Text.translatable("tooltip.totemexpansion.totem_recall.description").formatted(Formatting.GRAY));
+        super.appendTooltip(stack, context, displayComponent, textConsumer, type);
+    }
+
+    @Override
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         if (world.getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD) || world.getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD_CAVES)) {
             ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
 

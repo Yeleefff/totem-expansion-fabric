@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(LivingEntity.class)
 public interface TotemUseInvoker {
-    @Invoker("tryUseTotem")
+    @Invoker("tryUseDeathProtector")
     boolean useTotem(DamageSource source);
 }

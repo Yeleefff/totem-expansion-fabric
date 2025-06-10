@@ -5,40 +5,51 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.Util;
 import org.refabricators.totemexpansion.item.totem.*;
+
+import java.util.function.Function;
 
 import static org.refabricators.totemexpansion.TotemExpansion.id;
 
 public class ModItems {
-    public static final Item TOTEM_BASE = registerItem("totem_base", new Item(new Item.Settings()));
+    public static final Item TOTEM_BASE = registerItem("totem_base", Item::new, new Item.Settings());
 
-    public static final Item TOTEM_HEAD_UNDYING = registerItem("totem_head_undying", new Item(new Item.Settings()));
-    public static final Item TOTEM_HEAD_BREATHING = registerItem("totem_head_breathing",new Item(new Item.Settings()));
-    public static final Item TOTEM_HEAD_EXPLOSION = registerItem("totem_head_explosion", new Item(new Item.Settings()));
-    public static final Item TOTEM_HEAD_FALLING = registerItem("totem_head_falling", new Item(new Item.Settings()));
-    public static final Item TOTEM_HEAD_FIRE = registerItem("totem_head_fire", new Item(new Item.Settings()));
-    public static final Item TOTEM_HEAD_ORES = registerItem("totem_head_ores", new Item(new Item.Settings()));
-    public static final Item TOTEM_HEAD_REPAIR = registerItem("totem_head_repair", new Item(new Item.Settings()));
-    public static final Item TOTEM_HEAD_TIME = registerItem("totem_head_time", new Item(new Item.Settings()));
-    public static final Item TOTEM_HEAD_RECALL = registerItem("totem_head_recall", new Item(new Item.Settings()));
+    public static final Item TOTEM_HEAD_UNDYING = registerItem("totem_head_undying", Item::new, new Item.Settings());
+    public static final Item TOTEM_HEAD_BREATHING = registerItem("totem_head_breathing",Item::new, new Item.Settings());
+    public static final Item TOTEM_HEAD_EXPLOSION = registerItem("totem_head_explosion", Item::new, new Item.Settings());
+    public static final Item TOTEM_HEAD_FALLING = registerItem("totem_head_falling", Item::new, new Item.Settings());
+    public static final Item TOTEM_HEAD_FIRE = registerItem("totem_head_fire", Item::new, new Item.Settings());
+    public static final Item TOTEM_HEAD_ORES = registerItem("totem_head_ores", Item::new, new Item.Settings());
+    public static final Item TOTEM_HEAD_REPAIR = registerItem("totem_head_repair", Item::new, new Item.Settings());
+    public static final Item TOTEM_HEAD_TIME = registerItem("totem_head_time", Item::new, new Item.Settings());
+    public static final Item TOTEM_HEAD_RECALL = registerItem("totem_head_recall", Item::new, new Item.Settings());
 
-    public static final Item TOTEM_FALLING = registerItem("totem_falling", new TotemFalling());
-    public static final Item TOTEM_FIRE = registerItem("totem_fire", new TotemFire());
-    public static final Item TOTEM_BREATHING = registerItem("totem_breathing", new TotemBreathing());
-    public static final Item TOTEM_EXPLOSION = registerItem("totem_explosion", new TotemExplosion());
-    public static final Item TOTEM_ORES = registerItem("totem_ores", new TotemOres());
-    public static final Item TOTEM_REPAIR = registerItem("totem_repair", new TotemRepair());
-    public static final Item TOTEM_TIME = registerItem("totem_time", new TotemTime());
-    public static final Item TOTEM_RECALL = registerItem("totem_recall", new TotemRecall());
+    public static final Item TOTEM_FALLING = registerItem("totem_falling", TotemFalling::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    public static final Item TOTEM_FIRE = registerItem("totem_fire", TotemFire::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    public static final Item TOTEM_BREATHING = registerItem("totem_breathing", TotemBreathing::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    public static final Item TOTEM_EXPLOSION = registerItem("totem_explosion", TotemExplosion::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    public static final Item TOTEM_ORES = registerItem("totem_ores", TotemOres::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    public static final Item TOTEM_REPAIR = registerItem("totem_repair", TotemRepair::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    public static final Item TOTEM_TIME = registerItem("totem_time", TotemTime::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    public static final Item TOTEM_RECALL = registerItem("totem_recall", TotemRecall::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
 
-    private static Item registerItem(String name, Item item) {
+    private static RegistryKey<Item> keyOf(String name) {
+        return RegistryKey.of(RegistryKeys.ITEM, id(name));
+    }
+    
+    private static Item registerItem(String name, Function<Item.Settings, Item> factory, Item.Settings settings) {
+        Item item = factory.apply(settings.registryKey(keyOf(name)));
         return Registry.register(Registries.ITEM, id(name), item);
     }
 
-    private static void addModItemsToModGroup() {
+    public static void registerModItems() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
             entries.add(TOTEM_BASE);
             entries.add(TOTEM_HEAD_UNDYING);
@@ -59,9 +70,5 @@ public class ModItems {
             entries.add(TOTEM_REPAIR);
             entries.add(TOTEM_HEAD_REPAIR);
         });
-    }
-
-    public static void registerModItems() {
-        addModItemsToModGroup();
     }
 }

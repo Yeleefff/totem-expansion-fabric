@@ -11,8 +11,8 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Rarity;
 
 public abstract class TotemBase extends Item {
-    public TotemBase() {
-        super(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    public TotemBase(Item.Settings settings) {
+        super(settings);
         addDamageTypes();
         addEffects();
     }

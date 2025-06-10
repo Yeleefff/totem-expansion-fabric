@@ -31,13 +31,13 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
         super(type, world);
     }
 
-    @WrapOperation(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
+    @WrapOperation(method = "tryUseDeathProtector", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
     private boolean injectCustomTotemCheck(ItemStack stack, Item item, Operation<Boolean> original, DamageSource source) {
         return original.call(stack, item) || (stack.getItem() instanceof TotemBase && ((TotemBase)stack.getItem()).validDamageType(source) || stack.isOf(ModItems.TOTEM_ORES) || stack.isOf(ModItems.TOTEM_TIME) || stack.isOf(ModItems.TOTEM_RECALL) || stack.isOf(ModItems.TOTEM_REPAIR));
     }
 
     // Calls the totemUse event if supposed to, skipping vanilla setHealth stuff
-    @Inject(method = "tryUseTotem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION, cancellable = true)
+    @Inject(method = "tryUseDeathProtector", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), locals = LocalCapture.CAPTURE_FAILEXCEPTION, cancellable = true)
     private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, ItemStack itemStack) {
 
         if(itemStack.getItem() instanceof TotemBase && ((TotemBase) itemStack.getItem()).validDamageType(source) || itemStack.isOf(ModItems.TOTEM_ORES) || itemStack.isOf(ModItems.TOTEM_TIME) || itemStack.isOf(ModItems.TOTEM_RECALL) || itemStack.isOf(ModItems.TOTEM_REPAIR)) {
@@ -47,7 +47,7 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
     }
 
     // Gets what totem should be used
-    @ModifyVariable(method = "tryUseTotem", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;getStackInHand(Lnet/minecraft/util/Hand;)Lnet/minecraft/item/ItemStack;"))
+    @ModifyVariable(method = "tryUseDeathProtector", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;getStackInHand(Lnet/minecraft/util/Hand;)Lnet/minecraft/item/ItemStack;"))
     private ItemStack setTotemToPop(ItemStack itemStack, DamageSource source) {
         if (this.isPlayer()) {
             PlayerInventory inventory = ((InventoryAccessor) this).getInventory();
