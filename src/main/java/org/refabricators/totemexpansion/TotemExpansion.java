@@ -1,7 +1,9 @@
 package org.refabricators.totemexpansion;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.item.v1.ComponentTooltipAppenderRegistry;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.minecraft.component.ComponentType;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -12,6 +14,7 @@ import org.refabricators.totemexpansion.event.ModEventCallbacks;
 import org.refabricators.totemexpansion.item.ModItems;
 import org.refabricators.totemexpansion.network.SyncPlayerDataS2C;
 import org.refabricators.totemexpansion.util.ModLootTableModifiers;
+import org.refabricators.totemexpansion.util.TotemToolTipComponent;
 import org.refabricators.totemexpansion.villager.ModCustomTrades;
 import org.refabricators.totemexpansion.villager.ModVillagers;
 import org.slf4j.Logger;
@@ -24,7 +27,15 @@ public class TotemExpansion implements ModInitializer {
 	public static final String MOD_ID = "totemexpansion";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static final RegistryEntry<StatusEffect> SPELUNKING_EFFECT = register("spelunking_effect", new SpelunkingEffect());
+	public static final RegistryEntry<StatusEffect> SPELUNKING_EFFECT = Registry.registerReference(
+			Registries.STATUS_EFFECT,
+			id("spelunking_effect"),
+			new SpelunkingEffect());
+	public static final ComponentType<TotemToolTipComponent> TOTEM_TOOL_TIP_COMPONENT = Registry.register(
+			Registries.DATA_COMPONENT_TYPE,
+			id("totem_description"),
+			ComponentType.<TotemToolTipComponent>builder().codec(TotemToolTipComponent.CODEC).build());
+
 	public static ArrayList<List<Object>> activeRecallTotems = new ArrayList<>();
 
 	public static final byte USE_TOTEM_FALLING = 75;
@@ -40,13 +51,11 @@ public class TotemExpansion implements ModInitializer {
 		return Identifier.of(MOD_ID, path);
 	}
 
-	private static RegistryEntry<StatusEffect> register(String id, StatusEffect statusEffect) {
-		return Registry.registerReference(Registries.STATUS_EFFECT, id(id), statusEffect);
-	}
-
 	@Override
 	public void onInitialize() {
 		PayloadTypeRegistry.playS2C().register(SyncPlayerDataS2C.ID, SyncPlayerDataS2C.CODEC);
+
+		ComponentTooltipAppenderRegistry.addFirst(TOTEM_TOOL_TIP_COMPONENT);
 
 		ModLootTableModifiers.modifyLootTables();
 		ModItems.registerModItems();

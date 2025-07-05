@@ -1,6 +1,7 @@
 package org.refabricators.totemexpansion.item;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
@@ -12,7 +13,9 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.Util;
+import org.refabricators.totemexpansion.TotemExpansion;
 import org.refabricators.totemexpansion.item.totem.*;
+import org.refabricators.totemexpansion.util.TotemToolTipComponent;
 
 import java.util.function.Function;
 
@@ -31,14 +34,22 @@ public class ModItems {
     public static final Item TOTEM_HEAD_TIME = registerItem("totem_head_time", Item::new, new Item.Settings());
     public static final Item TOTEM_HEAD_RECALL = registerItem("totem_head_recall", Item::new, new Item.Settings());
 
-    public static final Item TOTEM_FALLING = registerItem("totem_falling", TotemFalling::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
-    public static final Item TOTEM_FIRE = registerItem("totem_fire", TotemFire::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
-    public static final Item TOTEM_BREATHING = registerItem("totem_breathing", TotemBreathing::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
-    public static final Item TOTEM_EXPLOSION = registerItem("totem_explosion", TotemExplosion::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
-    public static final Item TOTEM_ORES = registerItem("totem_ores", TotemOres::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
-    public static final Item TOTEM_REPAIR = registerItem("totem_repair", TotemRepair::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
-    public static final Item TOTEM_TIME = registerItem("totem_time", TotemTime::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
-    public static final Item TOTEM_RECALL = registerItem("totem_recall", TotemRecall::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON));
+    public static final Item TOTEM_FALLING = registerItem("totem_falling", TotemFalling::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
+            .component(TotemExpansion.TOTEM_TOOL_TIP_COMPONENT, new TotemToolTipComponent("totem_falling")));
+    public static final Item TOTEM_FIRE = registerItem("totem_fire", TotemFire::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
+            .component(TotemExpansion.TOTEM_TOOL_TIP_COMPONENT, new TotemToolTipComponent("totem_fire")));
+    public static final Item TOTEM_BREATHING = registerItem("totem_breathing", TotemBreathing::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
+            .component(TotemExpansion.TOTEM_TOOL_TIP_COMPONENT, new TotemToolTipComponent("totem_breathing")));
+    public static final Item TOTEM_EXPLOSION = registerItem("totem_explosion", TotemExplosion::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
+            .component(TotemExpansion.TOTEM_TOOL_TIP_COMPONENT, new TotemToolTipComponent("totem_explosion")));
+    public static final Item TOTEM_ORES = registerItem("totem_ores", TotemOres::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
+            .component(TotemExpansion.TOTEM_TOOL_TIP_COMPONENT, new TotemToolTipComponent("totem_ores")));
+    public static final Item TOTEM_REPAIR = registerItem("totem_repair", TotemRepair::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
+            .component(TotemExpansion.TOTEM_TOOL_TIP_COMPONENT, new TotemToolTipComponent("totem_repair")));
+    public static final Item TOTEM_TIME = registerItem("totem_time", TotemTime::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
+            .component(TotemExpansion.TOTEM_TOOL_TIP_COMPONENT, new TotemToolTipComponent("totem_time")));
+    public static final Item TOTEM_RECALL = registerItem("totem_recall", TotemRecall::new, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)
+            .component(TotemExpansion.TOTEM_TOOL_TIP_COMPONENT, new TotemToolTipComponent("totem_recall")));
 
     private static RegistryKey<Item> keyOf(String name) {
         return RegistryKey.of(RegistryKeys.ITEM, id(name));
