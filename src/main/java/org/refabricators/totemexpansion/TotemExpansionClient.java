@@ -24,8 +24,6 @@ import static org.refabricators.totemexpansion.TotemExpansion.id;
 
 
 public class TotemExpansionClient implements ClientModInitializer {
-
-
     public static PlayerData playerState = new PlayerData();
     private static final Identifier TEXTURE = id("textures/item/totem_head_ores.png");
     private static ArrayList<BlockPos> oreBlockPoses = new ArrayList<>();
