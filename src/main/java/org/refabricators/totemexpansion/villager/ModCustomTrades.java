@@ -3,13 +3,18 @@ package org.refabricators.totemexpansion.villager;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.util.Identifier;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradedItem;
+import net.minecraft.village.VillagerProfession;
+import org.refabricators.totemexpansion.TotemExpansion;
 import org.refabricators.totemexpansion.item.ModItems;
 
 public class ModCustomTrades {
     public static void registerCustomTrades() {
-        TradeOfferHelper.registerVillagerOffers(ModVillagers.WITCH_DOCTOR, 1, factories -> {
+        TradeOfferHelper.registerVillagerOffers(ModVillagers.WITCH_DOCTOR_KEY, 1, factories -> {
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(Items.EMERALD, 4),
                     new ItemStack(ModItems.TOTEM_BASE, 1),
@@ -36,7 +41,7 @@ public class ModCustomTrades {
                     2, 10, 0.15f));
                 });
 
-        TradeOfferHelper.registerVillagerOffers(ModVillagers.WITCH_DOCTOR, 3, factories -> {
+        TradeOfferHelper.registerVillagerOffers(ModVillagers.WITCH_DOCTOR_KEY, 3, factories -> {
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(Items.EMERALD, 21),
                     new ItemStack(ModItems.TOTEM_HEAD_UNDYING, 1),
@@ -55,7 +60,7 @@ public class ModCustomTrades {
                     2, 15, 0.3f));
         });
 
-        TradeOfferHelper.registerVillagerOffers(ModVillagers.WITCH_DOCTOR, 5, factories -> {
+        TradeOfferHelper.registerVillagerOffers(ModVillagers.WITCH_DOCTOR_KEY, 5, factories -> {
             factories.add((entity, random) -> new TradeOffer(
                     new TradedItem(Items.EMERALD, 23),
                     new ItemStack(ModItems.TOTEM_HEAD_ORES, 1),

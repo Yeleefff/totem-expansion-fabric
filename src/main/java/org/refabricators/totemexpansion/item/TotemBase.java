@@ -14,19 +14,11 @@ public abstract class TotemBase extends Item {
     public TotemBase(Item.Settings settings) {
         super(settings);
         addDamageTypes();
-        addEffects();
     }
 
     protected ArrayList<RegistryKey<DamageType>> damageTypes = new ArrayList<>();
-    protected ArrayList<StatusEffectInstance> effects = new ArrayList<>();
 
     public abstract void addDamageTypes();
-
-    public abstract void addEffects();
-
-    public void onTotemUse(LivingEntity entity) {
-        for (StatusEffectInstance effect : effects) entity.addStatusEffect(new StatusEffectInstance(effect));
-    }
 
     public boolean validDamageType(DamageSource source) {
         for (RegistryKey<DamageType> key : damageTypes) {

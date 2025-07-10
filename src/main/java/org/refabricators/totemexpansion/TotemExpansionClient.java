@@ -1,14 +1,13 @@
 package org.refabricators.totemexpansion;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -25,6 +24,8 @@ import static org.refabricators.totemexpansion.TotemExpansion.id;
 
 
 public class TotemExpansionClient implements ClientModInitializer {
+
+
     public static PlayerData playerState = new PlayerData();
     private static final Identifier TEXTURE = id("textures/item/totem_head_ores.png");
     private static ArrayList<BlockPos> oreBlockPoses = new ArrayList<>();

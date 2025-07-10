@@ -47,7 +47,7 @@ public abstract class ClientPlayNetworkHandlerMixin extends ClientCommonNetworkH
                 case 35, 75, 76, 77, 78, 79, 80, 81, 82 -> {
                     int i = 40;
                     this.client.particleManager.addEmitter(entity, ParticleTypes.TOTEM_OF_UNDYING, 30);
-                    if (packet.getStatus() != 82) this.world.playSound(entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ITEM_TOTEM_USE, entity.getSoundCategory(), 1.0f, 1.0f, false);
+                    if (packet.getStatus() != 82) this.world.playSound(entity, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ITEM_TOTEM_USE, entity.getSoundCategory(), 1.0f, 1.0f);
                     if (entity != this.client.player) break;
 
                     switch (packet.getStatus()) {
@@ -60,7 +60,7 @@ public abstract class ClientPlayNetworkHandlerMixin extends ClientCommonNetworkH
                         case 80 -> {this.client.gameRenderer.showFloatingItem(ModItems.TOTEM_REPAIR.getDefaultStack());}
                         case 81 -> {this.client.gameRenderer.showFloatingItem(ModItems.TOTEM_TIME.getDefaultStack());}
                         case 82 -> {
-                            this.world.playSoundFromEntity(entity, SoundEvents.ITEM_TOTEM_USE, entity.getSoundCategory(), 1.0f, 1.0f);
+                            this.world.playSoundFromEntity(entity, entity, SoundEvents.ITEM_TOTEM_USE, entity.getSoundCategory(), 1.0f, 1.0f);
                             this.client.gameRenderer.showFloatingItem(ModItems.TOTEM_RECALL.getDefaultStack());
                         }
                     }

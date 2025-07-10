@@ -1,41 +1,21 @@
 package org.refabricators.totemexpansion.item.totem;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionTypes;
-import org.refabricators.totemexpansion.TotemExpansion;
 import org.refabricators.totemexpansion.item.TotemBase;
 import org.refabricators.totemexpansion.mixin.TotemUseInvoker;
 import org.refabricators.totemexpansion.network.SyncPlayerDataS2C;
 import org.refabricators.totemexpansion.util.PlayerData;
 import org.refabricators.totemexpansion.util.StateSaverAndLoader;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.function.Consumer;
-
 public class TotemRecall extends TotemBase {
     public TotemRecall(Settings settings) {
         super(settings);
-    }
-
-    @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type) {
-        textConsumer.accept(Text.translatable("tooltip.totemexpansion.totem_recall.description").formatted(Formatting.GRAY));
-        super.appendTooltip(stack, context, displayComponent, textConsumer, type);
     }
 
     @Override
@@ -61,9 +41,5 @@ public class TotemRecall extends TotemBase {
 
     @Override
     public void addDamageTypes() {
-    }
-
-    @Override
-    public void addEffects() {
     }
 }

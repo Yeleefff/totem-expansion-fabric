@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 public class PlayerData {
-    public boolean usedRecallTotem = false;
-    public int recallDirection = 1;
+    public boolean usedRecallTotem;
+    public int recallDirection;
 
     public static final Codec<PlayerData> CODEC = RecordCodecBuilder.create(builder -> builder.group(
             Codec.BOOL.fieldOf("usedRecallTotem").forGetter(PlayerData::getIfUsedRecallTotem),
@@ -13,7 +13,8 @@ public class PlayerData {
     ).apply(builder, PlayerData::new));
 
     public PlayerData() {
-
+        this.usedRecallTotem = false;
+        this.recallDirection = 1;
     }
 
     public PlayerData(boolean usedRecallTotem, int recallDirection) {

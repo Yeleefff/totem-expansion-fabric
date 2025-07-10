@@ -29,8 +29,6 @@ public interface CustomTotemUsedCallback {
                         entity.clearStatusEffects();
                     }
 
-                    ((TotemBase) stack.getItem()).onTotemUse(entity);
-
                     if (stack.isOf(Items.TOTEM_OF_UNDYING)) {
                         entity.getWorld().sendEntityStatus(entity, EntityStatuses.USE_TOTEM_OF_UNDYING);
                     } else if (stack.isOf(ModItems.TOTEM_FALLING)) {
