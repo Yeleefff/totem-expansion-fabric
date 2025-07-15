@@ -62,57 +62,57 @@ public class TotemExpansionClient implements ClientModInitializer {
 
         this.genOreBlocksArray();
 
-        WorldRenderEvents.BEFORE_DEBUG_RENDER.register((context) -> {
-            MinecraftClient client = MinecraftClient.getInstance();
-
-            if (client.player != null && client.world != null && client.player.hasStatusEffect(TotemExpansion.SPELUNKING_EFFECT)) {
-
-                if (client.world.getTime() % 15 == 0 || oreBlockPoses.isEmpty()) {
-                    oreBlockPoses.clear();
-                    BlockPos playerPos = client.player.getBlockPos();
-
-                    for (int x = -range; x <= range; x++) {
-                        for (int y = -range; y <= range; y++) {
-                            for (int z = -range; z <= range; z++) {
-                                BlockPos blockPos = new BlockPos(playerPos.getX() + x, playerPos.getY() + y, playerPos.getZ() + z);
-                                if (oreBlocks.contains(client.world.getBlockState(blockPos).getBlock())) {
-                                    oreBlockPoses.add(new BlockPos(blockPos));
-                                }
-                            }
-                        }
-                    }
-                }
-
-                RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-                RenderSystem.setShaderTexture(0, TEXTURE);
-
-                for (BlockPos blockPos : oreBlockPoses) {
-                    BufferBuilder buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-                    MatrixStack matrices = context.matrixStack();
-                    Vec3d cameraPos = context.camera().getPos();
-
-                    matrices.push();
-                    matrices.translate(blockPos.getX() - cameraPos.x + 0.5, blockPos.getY() - cameraPos.y + 0.5, blockPos.getZ() - cameraPos.z + 0.5);
-                    matrices.scale(-1 / 32f, -1 / 32f, 1 / 32f);
-                    matrices.translate(0, Math.sin((client.world.getTime() + blockPos.getX() * (size/2) + blockPos.getY() * (size/2) + blockPos.getZ() * (size/2)) / size) * 0.9f, 0);
-                    matrices.multiply(RotationAxis.POSITIVE_Y.rotation((client.world.getTime() + blockPos.getX() * (size/2) + blockPos.getY() * (size/2) + blockPos.getZ() * (size/2)) / 20.0f));
-                    Matrix4f tMatrix = matrices.peek().getPositionMatrix();
-//                    Could probably just have used client.getItemRenderer().renderItem()
-
-                    buffer.vertex(tMatrix, 0f, -size, -size).texture(0f, 0f);
-                    buffer.vertex(tMatrix, 0f, size, -size).texture(0f, 1f);
-                    buffer.vertex(tMatrix, 0f, size, size).texture(1f, 1f);
-                    buffer.vertex(tMatrix, 0f, -size, size).texture(1f, 0f);
-                    buffer.vertex(tMatrix, 0f, -size, size).texture(1f, 0f);
-                    buffer.vertex(tMatrix, 0f, size, size).texture(1f, 1f);
-                    buffer.vertex(tMatrix, 0f, size, -size).texture(0f, 1f);
-                    buffer.vertex(tMatrix, 0f, -size, -size).texture(0f, 0f);
-
-                    matrices.pop();
-                    BufferRenderer.drawWithGlobalProgram(buffer.end());
-                }
-            }
-        });
+//        WorldRenderEvents.BEFORE_DEBUG_RENDER.register((context) -> {
+//            MinecraftClient client = MinecraftClient.getInstance();
+//
+//            if (client.player != null && client.world != null && client.player.hasStatusEffect(TotemExpansion.SPELUNKING_EFFECT)) {
+//
+//                if (client.world.getTime() % 15 == 0 || oreBlockPoses.isEmpty()) {
+//                    oreBlockPoses.clear();
+//                    BlockPos playerPos = client.player.getBlockPos();
+//
+//                    for (int x = -range; x <= range; x++) {
+//                        for (int y = -range; y <= range; y++) {
+//                            for (int z = -range; z <= range; z++) {
+//                                BlockPos blockPos = new BlockPos(playerPos.getX() + x, playerPos.getY() + y, playerPos.getZ() + z);
+//                                if (oreBlocks.contains(client.world.getBlockState(blockPos).getBlock())) {
+//                                    oreBlockPoses.add(new BlockPos(blockPos));
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+//                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+//                RenderSystem.setShaderTexture(0, TEXTURE);
+//
+//                for (BlockPos blockPos : oreBlockPoses) {
+//                    BufferBuilder buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+//                    MatrixStack matrices = context.matrixStack();
+//                    Vec3d cameraPos = context.camera().getPos();
+//
+//                    matrices.push();
+//                    matrices.translate(blockPos.getX() - cameraPos.x + 0.5, blockPos.getY() - cameraPos.y + 0.5, blockPos.getZ() - cameraPos.z + 0.5);
+//                    matrices.scale(-1 / 32f, -1 / 32f, 1 / 32f);
+//                    matrices.translate(0, Math.sin((client.world.getTime() + blockPos.getX() * (size/2) + blockPos.getY() * (size/2) + blockPos.getZ() * (size/2)) / size) * 0.9f, 0);
+//                    matrices.multiply(RotationAxis.POSITIVE_Y.rotation((client.world.getTime() + blockPos.getX() * (size/2) + blockPos.getY() * (size/2) + blockPos.getZ() * (size/2)) / 20.0f));
+//                    Matrix4f tMatrix = matrices.peek().getPositionMatrix();
+////                    Could probably just have used client.getItemRenderer().renderItem()
+//
+//                    buffer.vertex(tMatrix, 0f, -size, -size).texture(0f, 0f);
+//                    buffer.vertex(tMatrix, 0f, size, -size).texture(0f, 1f);
+//                    buffer.vertex(tMatrix, 0f, size, size).texture(1f, 1f);
+//                    buffer.vertex(tMatrix, 0f, -size, size).texture(1f, 0f);
+//                    buffer.vertex(tMatrix, 0f, -size, size).texture(1f, 0f);
+//                    buffer.vertex(tMatrix, 0f, size, size).texture(1f, 1f);
+//                    buffer.vertex(tMatrix, 0f, size, -size).texture(0f, 1f);
+//                    buffer.vertex(tMatrix, 0f, -size, -size).texture(0f, 0f);
+//
+//                    matrices.pop();
+//                    BufferRenderer.drawWithGlobalProgram(buffer.end());
+//                }
+//            }
+//        });
     }
 }

@@ -1,5 +1,6 @@
 package org.refabricators.totemexpansion.mixin;
 
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Attackable;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -34,12 +35,15 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
 //    }
 
     /**
-    Calls the totemUse event if supposed to, skipping vanilla setHealth stuff
+    Calls totemUsed event if item has the component DEATH_PROTECTION (and if applicable, checks if valid damage source). Skips vanilla set health stuff
      */
     @Inject(method = "tryUseDeathProtector", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, ItemStack itemStack) {
+        if (itemStack.get(DataComponentTypes.DEATH_PROTECTION) != null) {
+            if (itemStack.isOf(ModItems.TOTEM_FALLING) || itemStack.isOf(ModItems.TOTEM_FIRE) || itemStack.isOf(ModItems.TOTEM_BREATHING)) {
+                if (!(((TotemBase) itemStack.getItem()).validDamageType(source))) return;
+            }
 
-        if(itemStack.getItem() instanceof TotemBase && ((TotemBase) itemStack.getItem()).validDamageType(source) || itemStack.isOf(ModItems.TOTEM_ORES) || itemStack.isOf(ModItems.TOTEM_TIME) || itemStack.isOf(ModItems.TOTEM_RECALL) || itemStack.isOf(ModItems.TOTEM_REPAIR)) {
             CustomTotemUsedCallback.EVENT.invoker().invoke(((LivingEntity) (Object) this), itemStack, source);
             cir.setReturnValue(itemStack != null);
         }
@@ -49,7 +53,7 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
      * Gets what totem should be used
      */
     @ModifyVariable(method = "tryUseDeathProtector", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/entity/LivingEntity;getStackInHand(Lnet/minecraft/util/Hand;)Lnet/minecraft/item/ItemStack;"))
-    private ItemStack setTotemToPop(ItemStack itemStack, DamageSource source) {
+    private ItemStack setTotemToUse(ItemStack itemStack, DamageSource source) {
         if (this.isPlayer()) {
             PlayerInventory inventory = ((InventoryAccessor) this).getInventory();
             ItemStack totemUndying = Items.TOTEM_OF_UNDYING.getDefaultStack();
@@ -58,14 +62,14 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
             ItemStack totemBreathing = ModItems.TOTEM_BREATHING.getDefaultStack();
             ItemStack totemExplosion = ModItems.TOTEM_EXPLOSION.getDefaultStack();
             ItemStack totemRepair = ModItems.TOTEM_REPAIR.getDefaultStack();
+
+            // NOTE: getSlotWithStack() only searches main, include a check for if the method returns -1
+            // If the totem is known to be in the inventory, then return the offhand since that is the only other possible slot
+            ArrayList<ItemStack> inventorySlots = new ArrayList<>();
+            inventorySlots.addAll(inventory.getMainStacks());
+            inventorySlots.add(inventory.getStack(40));
             
             if (inventory.contains(totemRepair)) {
-                ArrayList<ItemStack> inventorySlots = new ArrayList<>();
-                inventorySlots.addAll(inventory.getMainStacks());
-                inventorySlots.add(inventory.getStack(40));
-
-                // NOTE: getSlotWithStack() only searches main, include a check for if the method returns -1
-                // If the totem is known to be in the inventory, then return the offhand since that is the only other possible slot
                 for (ItemStack item : inventorySlots) {
                     if (item.isDamageable() && item.getDamage() >= item.getMaxDamage()) {
                         item.setDamage(0);
@@ -102,7 +106,7 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
                     return totemInInventory;
             }
 
-            if (inventory.contains(totemUndying)) {
+            if (inventorySlots.stream().anyMatch(stack -> stack.get(DataComponentTypes.DEATH_PROTECTION) != null)) {
                 return inventory.getSlotWithStack(totemUndying) != -1 ? inventory.getStack(inventory.getSlotWithStack(totemUndying)) : inventory.getStack(40);
             }
 

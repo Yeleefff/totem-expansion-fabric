@@ -53,7 +53,7 @@ public class TotemExpansion implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		PayloadTypeRegistry.playS2C().register(SyncPlayerDataS2C.ID, SyncPlayerDataS2C.CODEC);
+        PayloadTypeRegistry.playS2C().register(SyncPlayerDataS2C.ID, SyncPlayerDataS2C.CODEC);
 
 		ComponentTooltipAppenderRegistry.addFirst(TOTEM_TOOL_TIP_COMPONENT);
 
