@@ -15,6 +15,7 @@ import org.refabricators.totemexpansion.network.SyncPlayerDataS2C;
 import org.refabricators.totemexpansion.util.PlayerData;
 import org.refabricators.totemexpansion.util.StateSaverAndLoader;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -24,9 +25,9 @@ import java.util.Set;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
-    private final int stepSize = 6;
-    private boolean isSpaceEmpty;
-    private TeleportTarget spawnTarget;
+    @Unique private final int stepSize = 6;
+    @Unique private boolean isSpaceEmpty;
+    @Unique private TeleportTarget spawnTarget;
 
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -34,19 +35,20 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
     @Inject(method = "tick", at = @At(value = "HEAD"))
     private void injectRecall(CallbackInfo info) {
+        StateSaverAndLoader serverState = null;
         PlayerEntity player = (PlayerEntity)(Object) this;
         PlayerData playerState;
 
         if (this.getWorld().isClient) {
             playerState = TotemExpansionClient.playerState;
         } else {
-            playerState = StateSaverAndLoader.getPlayerState(player);
+            serverState = StateSaverAndLoader.getServerState(this.getServer());
+            playerState = StateSaverAndLoader.getOrCreatePlayerData(player);
         }
 
         if (playerState.usedRecallTotem) {
             this.isSpaceEmpty = this.getWorld().isBlockSpaceEmpty(null, new Box(this.getX(), this.getY(), this.getZ(), this.getX(), this.getY() + stepSize * playerState.recallDirection, this.getZ()));
 
-            this.setInvulnerable(true);
             this.setNoGravity(true);
             if (this.isSpaceEmpty)
                 this.setPos(this.getX(), this.getY() + stepSize * playerState.recallDirection, this.getZ());
@@ -54,6 +56,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             if ((!this.isSpaceEmpty && playerState.recallDirection == 1) || this.getY() >= 600) {
                 if (player instanceof ServerPlayerEntity serverPlayerEntity) {
                     playerState.recallDirection = -1;
+                    serverState.markDirty();
                     ServerPlayNetworking.send(serverPlayerEntity, new SyncPlayerDataS2C(playerState.usedRecallTotem, playerState.recallDirection));
 
                     this.spawnTarget = serverPlayerEntity.getRespawnTarget(true, entity -> {});
@@ -71,10 +74,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 
                     this.fallDistance = 0;
                     this.setNoGravity(false);
-                    this.setInvulnerable(false);
 
                     playerState.usedRecallTotem = false;
                     playerState.recallDirection = 1;
+                    serverState.markDirty();
                     ServerPlayNetworking.send(serverPlayerEntity, new SyncPlayerDataS2C(playerState.usedRecallTotem, playerState.recallDirection));
                 }
             }

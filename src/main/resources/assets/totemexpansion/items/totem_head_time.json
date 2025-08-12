@@ -1,6 +1,6 @@
 {
     "model": {
         "type": "minecraft:model",
-        "model": "totemexpansion:item/head_time"
+        "model": "totemexpansion:item/totem_head_time"
     }
 }

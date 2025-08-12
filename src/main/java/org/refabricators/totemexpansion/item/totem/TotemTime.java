@@ -18,8 +18,11 @@ public class TotemTime extends TotemBase {
         ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
 
         if (!world.isClient) {
+            if (world.getServer() == null) throw new AssertionError("world.getServer() was null");
+
             StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(world.getServer());
             serverState.activeTimeTotems.add(0);
+            serverState.markDirty();
         }
 
         return super.use(world, user, hand);

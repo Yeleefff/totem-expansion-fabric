@@ -20,17 +20,16 @@ public class TotemRecall extends TotemBase {
 
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        if (world.getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD) || world.getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD_CAVES)) {
+        if (world.getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD)) { // world.getDimensionEntry().matchesKey(DimensionTypes.OVERWORLD_CAVES)
             ((TotemUseInvoker) user).useTotem(world.getDamageSources().generic());
 
             if (!world.isClient) {
-                PlayerData playerState = StateSaverAndLoader.getPlayerState(user);
+                StateSaverAndLoader serverState = StateSaverAndLoader.getServerState(world.getServer());
+                PlayerData playerState = StateSaverAndLoader.getOrCreatePlayerData(user);
 
-                if (playerState.usedRecallTotem) {
-                    playerState.recallDirection = 1;
-                } else {
-                    playerState.usedRecallTotem = true;
-                }
+                if (playerState.usedRecallTotem) playerState.recallDirection = 1;
+                else playerState.usedRecallTotem = true;
+                serverState.markDirty();
 
                 ServerPlayNetworking.send((ServerPlayerEntity) user, new SyncPlayerDataS2C(playerState.usedRecallTotem, playerState.recallDirection));
             }

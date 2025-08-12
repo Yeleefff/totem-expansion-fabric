@@ -1,6 +1,6 @@
 {
     "model": {
         "type": "minecraft:model",
-        "model": "totemexpansion:item/repair"
+        "model": "totemexpansion:item/totem_repair"
     }
 }

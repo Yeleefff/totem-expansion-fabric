@@ -1,6 +1,6 @@
 {
     "model": {
         "type": "minecraft:model",
-        "model": "totemexpansion:item/fire"
+        "model": "totemexpansion:item/totem_fire"
     }
 }

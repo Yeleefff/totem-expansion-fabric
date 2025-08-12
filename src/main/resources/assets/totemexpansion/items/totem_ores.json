@@ -1,6 +1,6 @@
 {
     "model": {
         "type": "minecraft:model",
-        "model": "totemexpansion:item/ores"
+        "model": "totemexpansion:item/totem_ores"
     }
 }

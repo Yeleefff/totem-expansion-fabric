@@ -1,6 +1,6 @@
 {
     "model": {
         "type": "minecraft:model",
-        "model": "totemexpansion:item/time"
+        "model": "totemexpansion:item/totem_time"
     }
 }

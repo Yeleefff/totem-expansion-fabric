@@ -7,7 +7,7 @@ import net.minecraft.world.GameRules;
 import org.refabricators.totemexpansion.util.StateSaverAndLoader;
 
 public class ModEventCallbacks {
-    private static int timeIncrement = 20;
+    private static final int timeIncrement = 25;
 
     public static void registerEventCallbacks() {
         ServerTickEvents.START_WORLD_TICK.register((world) -> {
@@ -20,11 +20,13 @@ public class ModEventCallbacks {
                 if (player != null) player.networkHandler.sendPacket(new WorldTimeUpdateS2CPacket(world.getTime(), world.getTimeOfDay(), world.getGameRules().getBoolean(GameRules.DO_DAYLIGHT_CYCLE)));
                 serverState.activeTimeTotems.set(i, serverState.activeTimeTotems.get(i) + 1);
 
-                if (serverState.activeTimeTotems.get(i) >= (int) (10000/timeIncrement)) {
+                if (serverState.activeTimeTotems.get(i) >= (int) (12000/timeIncrement)) {
                     serverState.activeTimeTotems.remove(i);
                     i--;
                 }
             }
+
+            if (!serverState.activeTimeTotems.isEmpty()) serverState.markDirty();
         });
 
         CustomTotemUsedCallback.EVENT.register((entity, stack, source) -> {});

@@ -1,5 +1,6 @@
 package org.refabricators.totemexpansion.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Attackable;
 import net.minecraft.entity.Entity;
@@ -37,8 +38,8 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
     /**
     Calls totemUsed event if item has the component DEATH_PROTECTION (and if applicable, checks if valid damage source). Skips vanilla set health stuff
      */
-    @Inject(method = "tryUseDeathProtector", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-    private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, ItemStack itemStack) {
+    @Inject(method = "tryUseDeathProtector", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), cancellable = true)
+    private void injectCustomTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) ItemStack itemStack) {
         if (itemStack.get(DataComponentTypes.DEATH_PROTECTION) != null) {
             if (itemStack.isOf(ModItems.TOTEM_FALLING) || itemStack.isOf(ModItems.TOTEM_FIRE) || itemStack.isOf(ModItems.TOTEM_BREATHING)) {
                 if (!(((TotemBase) itemStack.getItem()).validDamageType(source))) return;
@@ -65,8 +66,7 @@ public abstract class TryUseTotemMixin extends Entity implements Attackable {
 
             // NOTE: getSlotWithStack() only searches main, include a check for if the method returns -1
             // If the totem is known to be in the inventory, then return the offhand since that is the only other possible slot
-            ArrayList<ItemStack> inventorySlots = new ArrayList<>();
-            inventorySlots.addAll(inventory.getMainStacks());
+            ArrayList<ItemStack> inventorySlots = new ArrayList<>(inventory.getMainStacks());
             inventorySlots.add(inventory.getStack(40));
             
             if (inventory.contains(totemRepair)) {

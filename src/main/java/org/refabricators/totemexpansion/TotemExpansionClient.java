@@ -1,7 +1,5 @@
 package org.refabricators.totemexpansion;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -10,11 +8,12 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Matrix4f;
+import org.refabricators.totemexpansion.item.ModItems;
 import org.refabricators.totemexpansion.network.SyncPlayerDataS2C;
 import org.refabricators.totemexpansion.util.PlayerData;
 
@@ -31,26 +30,49 @@ public class TotemExpansionClient implements ClientModInitializer {
     private static final float size = 8f;
     private static final int range = 12;
 
-    private void genOreBlocksArray() {
-        oreBlocks.add(Blocks.COAL_ORE);
-        oreBlocks.add(Blocks.DEEPSLATE_COAL_ORE);
-        oreBlocks.add(Blocks.COPPER_ORE);
-        oreBlocks.add(Blocks.DEEPSLATE_COPPER_ORE);
-        oreBlocks.add(Blocks.RAW_COPPER_BLOCK);
-        oreBlocks.add(Blocks.IRON_ORE);
-        oreBlocks.add(Blocks.DEEPSLATE_IRON_ORE);
-        oreBlocks.add(Blocks.RAW_IRON_BLOCK);
-        oreBlocks.add(Blocks.GOLD_ORE);
-        oreBlocks.add(Blocks.DEEPSLATE_GOLD_ORE);
-        oreBlocks.add(Blocks.RAW_GOLD_BLOCK);
-        oreBlocks.add(Blocks.DIAMOND_ORE);
-        oreBlocks.add(Blocks.DEEPSLATE_DIAMOND_ORE);
-        oreBlocks.add(Blocks.EMERALD_ORE);
-        oreBlocks.add(Blocks.DEEPSLATE_EMERALD_ORE);
-        oreBlocks.add(Blocks.NETHER_GOLD_ORE);
-        oreBlocks.add(Blocks.NETHER_QUARTZ_ORE);
-        oreBlocks.add(Blocks.ANCIENT_DEBRIS);
-        // gen from c:ores tag instead
+    private ArrayList<Block> genOreBlocksList() {
+        ArrayList<Block> list = new ArrayList<>();
+        list.add(Blocks.COAL_ORE);
+        list.add(Blocks.DEEPSLATE_COAL_ORE);
+        list.add(Blocks.COPPER_ORE);
+        list.add(Blocks.DEEPSLATE_COPPER_ORE);
+        list.add(Blocks.RAW_COPPER_BLOCK);
+        list.add(Blocks.IRON_ORE);
+        list.add(Blocks.DEEPSLATE_IRON_ORE);
+        list.add(Blocks.RAW_IRON_BLOCK);
+        list.add(Blocks.GOLD_ORE);
+        list.add(Blocks.DEEPSLATE_GOLD_ORE);
+        list.add(Blocks.RAW_GOLD_BLOCK);
+        list.add(Blocks.DIAMOND_ORE);
+        list.add(Blocks.DEEPSLATE_DIAMOND_ORE);
+        list.add(Blocks.EMERALD_ORE);
+        list.add(Blocks.DEEPSLATE_EMERALD_ORE);
+        list.add(Blocks.NETHER_GOLD_ORE);
+        list.add(Blocks.NETHER_QUARTZ_ORE);
+        list.add(Blocks.ANCIENT_DEBRIS);
+//        Registries.BLOCK.forEach(block -> {
+//            if (block.getDefaultState().isIn(TagKey.of(RegistryKeys.BLOCK, Identifier.of("c", "ores")))) list.add(block);
+//        });
+
+        return list;
+    }
+
+    private ArrayList<BlockPos> genOrePosList(MinecraftClient client) {
+        ArrayList<BlockPos> list = new ArrayList<>();
+        BlockPos playerPos = client.player.getBlockPos();
+
+        for (int x = -range; x <= range; x++) {
+            for (int y = -range; y <= range; y++) {
+                for (int z = -range; z <= range; z++) {
+                    BlockPos blockPos = new BlockPos(playerPos.getX() + x, playerPos.getY() + y, playerPos.getZ() + z);
+                    if (oreBlocks.contains(client.world.getBlockState(blockPos).getBlock())) {
+                        list.add(new BlockPos(blockPos));
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
     @Override
@@ -60,59 +82,44 @@ public class TotemExpansionClient implements ClientModInitializer {
             playerState.recallDirection = payload.recallDirection();
         });
 
-        this.genOreBlocksArray();
+        oreBlocks = genOreBlocksList();
 
-//        WorldRenderEvents.BEFORE_DEBUG_RENDER.register((context) -> {
-//            MinecraftClient client = MinecraftClient.getInstance();
-//
-//            if (client.player != null && client.world != null && client.player.hasStatusEffect(TotemExpansion.SPELUNKING_EFFECT)) {
-//
-//                if (client.world.getTime() % 15 == 0 || oreBlockPoses.isEmpty()) {
-//                    oreBlockPoses.clear();
-//                    BlockPos playerPos = client.player.getBlockPos();
-//
-//                    for (int x = -range; x <= range; x++) {
-//                        for (int y = -range; y <= range; y++) {
-//                            for (int z = -range; z <= range; z++) {
-//                                BlockPos blockPos = new BlockPos(playerPos.getX() + x, playerPos.getY() + y, playerPos.getZ() + z);
-//                                if (oreBlocks.contains(client.world.getBlockState(blockPos).getBlock())) {
-//                                    oreBlockPoses.add(new BlockPos(blockPos));
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-//                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-//                RenderSystem.setShaderTexture(0, TEXTURE);
-//
-//                for (BlockPos blockPos : oreBlockPoses) {
-//                    BufferBuilder buffer = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
-//                    MatrixStack matrices = context.matrixStack();
-//                    Vec3d cameraPos = context.camera().getPos();
-//
-//                    matrices.push();
-//                    matrices.translate(blockPos.getX() - cameraPos.x + 0.5, blockPos.getY() - cameraPos.y + 0.5, blockPos.getZ() - cameraPos.z + 0.5);
-//                    matrices.scale(-1 / 32f, -1 / 32f, 1 / 32f);
+        WorldRenderEvents.BEFORE_ENTITIES.register((context) -> {
+            MinecraftClient client = MinecraftClient.getInstance();
+
+            if (client.player != null && client.world != null && client.player.hasStatusEffect(TotemExpansion.SPELUNKING_EFFECT)) {
+                if (client.world.getTime() % 15 == 0 || oreBlockPoses.isEmpty()) {
+                    oreBlockPoses.clear();
+                    oreBlockPoses = genOrePosList(client);
+                }
+
+                VertexConsumerProvider vertexConsumerProvider = context.consumers();
+                MatrixStack matrices = context.matrixStack();
+                Vec3d cameraPos = context.camera().getPos();
+
+                for (BlockPos blockPos : oreBlockPoses) {
+                    matrices.push();
+                    matrices.translate(blockPos.getX() - cameraPos.getX() + 0.5, blockPos.getY() - cameraPos.getY() + 0.5 + 1, blockPos.getZ() - cameraPos.getZ() + 0.5);
+                    matrices.scale(1/2f, 1/2f, 1/2f);
+                    matrices.translate(0, Math.sin(client.world.getTime() / size) * 0.1, 0);
+                    matrices.multiply(RotationAxis.POSITIVE_Y.rotation(client.world.getTime() / 20.0f));
+
+                    client.getItemRenderer().renderItem(ModItems.TOTEM_HEAD_ORES.getDefaultStack(), ItemDisplayContext.FIXED, 15728880, OverlayTexture.DEFAULT_UV, matrices, vertexConsumerProvider, client.world, 0);
+                    matrices.pop();
+                }
+            }
+
 //                    matrices.translate(0, Math.sin((client.world.getTime() + blockPos.getX() * (size/2) + blockPos.getY() * (size/2) + blockPos.getZ() * (size/2)) / size) * 0.9f, 0);
 //                    matrices.multiply(RotationAxis.POSITIVE_Y.rotation((client.world.getTime() + blockPos.getX() * (size/2) + blockPos.getY() * (size/2) + blockPos.getZ() * (size/2)) / 20.0f));
-//                    Matrix4f tMatrix = matrices.peek().getPositionMatrix();
-////                    Could probably just have used client.getItemRenderer().renderItem()
-//
-//                    buffer.vertex(tMatrix, 0f, -size, -size).texture(0f, 0f);
-//                    buffer.vertex(tMatrix, 0f, size, -size).texture(0f, 1f);
-//                    buffer.vertex(tMatrix, 0f, size, size).texture(1f, 1f);
-//                    buffer.vertex(tMatrix, 0f, -size, size).texture(1f, 0f);
-//                    buffer.vertex(tMatrix, 0f, -size, size).texture(1f, 0f);
-//                    buffer.vertex(tMatrix, 0f, size, size).texture(1f, 1f);
-//                    buffer.vertex(tMatrix, 0f, size, -size).texture(0f, 1f);
-//                    buffer.vertex(tMatrix, 0f, -size, -size).texture(0f, 0f);
-//
-//                    matrices.pop();
-//                    BufferRenderer.drawWithGlobalProgram(buffer.end());
-//                }
-//            }
-//        });
+
+//                    vertexConsumer.vertex(tMatrix, 0f, -size, -size).texture(0f, 0f);
+//                    vertexConsumer.vertex(tMatrix, 0f, size, -size).texture(0f, 1f);
+//                    vertexConsumer.vertex(tMatrix, 0f, size, size).texture(1f, 1f);
+//                    vertexConsumer.vertex(tMatrix, 0f, -size, size).texture(1f, 0f);
+//                    vertexConsumer.vertex(tMatrix, 0f, -size, size).texture(1f, 0f);
+//                    vertexConsumer.vertex(tMatrix, 0f, size, size).texture(1f, 1f);
+//                    vertexConsumer.vertex(tMatrix, 0f, size, -size).texture(0f, 1f);
+//                    vertexConsumer.vertex(tMatrix, 0f, -size, -size).texture(0f, 0f);
+        });
     }
 }
